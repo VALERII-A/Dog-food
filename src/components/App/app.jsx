@@ -14,6 +14,7 @@ import { Route, Routes } from 'react-router-dom';
 import { NoMatchFound } from '../../pages/NoMatchFound/NoMatchFound';
 import useDebounce from '../../hooks/useDebounce';
 import { UserContext } from '../../context/userContext';
+import { FaqPage } from '../../pages/faq/faq-page';
 
 
 function App() {
@@ -105,6 +106,8 @@ function App() {
                 handleProductLike={handleProductLike} />}
           ></Route>
           <Route path='/product/:productId' element={<ProductPage />}></Route>
+          <Route path='/faq' element={<FaqPage />}></Route>
+          {/* <Route path='/favorites' element={<Favorite />}></Route> */}
           <Route path='*' element={<NoMatchFound />}></Route>
         </Routes>
       </main>
