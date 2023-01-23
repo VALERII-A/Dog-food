@@ -28,13 +28,13 @@ export const Product = ({
     navigate('/');
   };
 
-  const location = useLocation();
+  // const location = useLocation();
 
-  useEffect(()=>{
-    if (location.search.includes('name=dear')) {
-      navigate('/');
-    }
-  }, [location.search]);
+  // useEffect(()=>{
+  //   if (location.search.includes('name=dear')) {
+  //     navigate('/');
+  //   }
+  // }, [location.search]);
 
 
   return (

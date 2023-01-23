@@ -7,8 +7,8 @@ import { UserContext } from '../../context/userContext';
 import api from '../../utils/api';
 
 
-export const ProductPage = () => {
-  const [currentUser, setCurrentUser] = useState(null);
+export const ProductPage = ({ currentUser }) => {
+  // const [currentUser, setCurrentUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [product, setProduct] = useState(null);
   const { handleProductLike } = useContext(UserContext);
@@ -23,7 +23,7 @@ export const ProductPage = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    api.getUserInfo().then((userData) => setCurrentUser(userData));
+    // api.getUserInfo().then((userData) => setCurrentUser(userData));
     api
       .getProductById(productId)
       .then((productData) => setProduct(productData))

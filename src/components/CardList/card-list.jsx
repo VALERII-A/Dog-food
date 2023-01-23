@@ -1,10 +1,11 @@
 import Card from '../Card/card';
 import './index.css';
 
-const CardList = ({ goods, currentUser, onProductLike }) => {
+
+const CardList = ({ onProductLike, cards=[],currentUser }) => {
   return (
     <div className='cards'>
-      {goods.map((item, index) => (
+      {cards.map((item ) => (
         <Card
           key={item._id}
           {...item}

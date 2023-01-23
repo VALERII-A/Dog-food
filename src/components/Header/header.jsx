@@ -1,11 +1,17 @@
 import s from './index.module.css';
 import cn from 'classnames';
+import { ReactComponent as FavIcon } from './img/fav.svg';
+import { Link } from 'react-router-dom';
+import { useContext } from 'react';
+import { CardContext } from '../../context/cardContext';
 
 function Header({ children, user, onUpdateUser }) {
   const handleClickButtonEdit = (e) => {
     e.preventDefault();
-    onUpdateUser({ about: 'Старатель', name: "Сиф" });
+    onUpdateUser({ about: 'Ментор', name: "Александр" });
   };
+
+  const {favorites} = useContext(CardContext);
   
 
   return (
@@ -19,7 +25,16 @@ function Header({ children, user, onUpdateUser }) {
           Change
         </button>
 
-        <div className={s.wrapper}>{children}</div>
+        <div className={s.wrapper}>{children}
+        <div className={s.iconsMenu}>
+          <Link className={s.favoritesLink} to='/favorites'> 
+          <FavIcon />
+          {favorites.length !==0 && (
+          <span className={s.iconBubble} >{favorites.length}</span> 
+          )}
+          </Link>
+        </div>
+        </div>
       </div>
     </header>
   );
