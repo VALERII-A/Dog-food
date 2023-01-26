@@ -56,7 +56,8 @@ function App() {
     cards ,favorites
   };
   const userProvider = {
-    handleProductLike , currentUser
+    handleProductLike ,
+     currentUser
   };
 
 
@@ -72,8 +73,8 @@ function App() {
       const newProducts = cards.map((cardState) => {
         return cardState._id === newCard._id ? newCard : cardState;});
         if (!liked) {
-          setFavorites(prevState => [... prevState, newCard])
-        } else setFavorites (prevState => prevState.filter(card => card._id !== newCard._id))
+          setFavorites((prevState) => [... prevState, newCard]);
+        } else setFavorites ((prevState) => prevState.filter((card) => card._id !== newCard._id));
       setCards(newProducts);
     });
   }  // лайки
