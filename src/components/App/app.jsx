@@ -17,6 +17,8 @@ import { FaqPage } from '../../pages/faq/faq-page';
 import { Favorite } from '../../pages/favorites/favorites';
 import { isLiked } from '../../utils/utils';
 import { CardContext } from '../../context/cardContext';
+import RegistrationForm from '../Form/RegistrationForm';
+import { Modal } from '../Modal/modal';
 
 
 function App() {
@@ -25,6 +27,8 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null);  // текущ пользователь
   const [favorites, setFavorites] = useState([]);
   // const [view, setView] = useState(false);
+  const [activeModal, setActiveModal] = useState(false);
+  const [contacts, setContacts] = useState([]);
 
 
   const debounceSearchQuery = useDebounce(searchQuery, 1000);  // накопл знач запроса серч
@@ -52,12 +56,31 @@ function App() {
 
   // const context = UserContext();
 
+  const sortedData = (currenSort) => {
+    switch (currenSort) {
+      case 'expensive': setCards([...cards.sort((a,b)=> b.price - a.price )]);  break;
+      case 'cheep': setCards([...cards.sort((a,b)=> a?.price - b?.price )]);  break;
+      case 'newest': setCards([...cards.sort((a,b)=> new Date(b?.created_at) - new Date(a?.created_at) )]);  break;
+      case 'popular': setCards([...cards.sort((a,b)=> b?.likes?.length - a?.likes?.length )]);  break;
+      default:
+        setCards([...cards.sort((a,b)=> a.price - b.price )]);
+        break;
+    }
+  };
+
   const valueProvider = {
-    cards ,favorites
+    cards,
+    favorites,
+    onSortData: sortedData,
   };
   const userProvider = {
     handleProductLike ,
      currentUser
+  };
+
+  const addContact = (contact) => {
+    setContacts([...contacts, contact]);
+    // api.createContact(contact)
   };
 
 
@@ -101,7 +124,7 @@ function App() {
     <>
     <CardContext.Provider value={valueProvider}>
     <UserContext.Provider value={userProvider}>
-      <Header user={currentUser} onUpdateUser={handleUpdateUser}>
+      <Header user={currentUser} onUpdateUser={handleUpdateUser} setActiveModal={setActiveModal}>
         <>
           <Logo className='logo logo_place_header'/>
           <Routes>
@@ -113,6 +136,13 @@ function App() {
           </Routes>
         </>
       </Header>
+
+      <Modal activeModal={activeModal} setActiveModal={setActiveModal}>
+              <div style={{ width: '300px', height: '300px' }}>
+                <RegistrationForm addContact={addContact} />
+              </div>
+            </Modal>
+
       <main className='content container'>
         <SeachInfo searchCount={cards.length} searchText={searchQuery} />
         <Routes>
@@ -126,6 +156,7 @@ function App() {
           <Route path='/faq' element={<FaqPage />}></Route>
           <Route path='/favorites' element={<Favorite currentUser={currentUser}/>}></Route>
           <Route path='*' element={<NoMatchFound />}></Route>
+          <Route path='/registrationForm' element={<RegistrationForm/>}></Route>
         </Routes>
       </main>
       <Footer />

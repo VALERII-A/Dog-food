@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useContext } from 'react';
 import { CardContext } from '../../context/cardContext';
 
-function Header({ children, user, onUpdateUser }) {
+function Header({ children, user, onUpdateUser , setActiveModal}) {
   const handleClickButtonEdit = (e) => {
     e.preventDefault();
     onUpdateUser({ about: 'Ментор', name: "Александр" });
@@ -26,6 +26,7 @@ function Header({ children, user, onUpdateUser }) {
         </button>
 
         <div className={s.wrapper}>{children}
+        <span style={{ cursor: 'pointer' }} onClick={()=>setActiveModal(true)}>Регистрация</span>
         <div className={s.iconsMenu}>
           <Link className={s.favoritesLink} to='/favorites'> 
           <FavIcon />

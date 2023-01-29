@@ -21,6 +21,8 @@ export const ProductPage = ({ currentUser }) => {
   const { productId } = useParams();
 
 
+  
+
   useEffect(() => {
     setIsLoading(true);
     // api.getUserInfo().then((userData) => setCurrentUser(userData));
@@ -33,6 +35,7 @@ export const ProductPage = ({ currentUser }) => {
 
   return (
     <>
+    <p>1233</p>
       <div className='content__cards'>
         {isLoading ? (
           <Spinner />

@@ -25,7 +25,7 @@ export const Product = ({
   let navigate = useNavigate();
 
   const handleClick = () => {
-    navigate('/');
+    navigate(-1);
   };
 
   // const location = useLocation();
@@ -39,6 +39,7 @@ export const Product = ({
 
   return (
     <>
+    <p>12333333</p>
       <div>
         <button onClick={handleClick} className='btn'>
           Назад
