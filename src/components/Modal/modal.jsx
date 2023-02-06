@@ -1,6 +1,5 @@
 import cn from "classnames";
 import { useEffect } from "react";
-import { useState } from "react";
 import './index.css'
 
 
@@ -12,7 +11,8 @@ useEffect(()=>{
 },[]);
 
   return (
-    <div className={cn('modal', {['active']: activeModal})} onClick={()=>setActiveModal(false)}>
+    // <div className={cn('modal', {['active']: activeModal})} onClick={()=>{}}>
+      <div className={cn('modal', {['active']: activeModal})} onClick={()=>setActiveModal(false)}>
       <div className={cn('modal_content', {['active']: activeModal})} onClick={e=> e.stopPropagation()}>{children}</div>
     </div>
   );

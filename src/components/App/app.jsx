@@ -19,6 +19,10 @@ import { isLiked } from '../../utils/utils';
 import { CardContext } from '../../context/cardContext';
 import RegistrationForm from '../Form/RegistrationForm';
 import { Modal } from '../Modal/modal';
+import { useCallback } from 'react';
+import Login from '../Login/Login';
+import Register from '../Register/Register';
+import ResetPassword from '../ResetPassword/ResetPassword';
 
 
 function App() {
@@ -30,6 +34,17 @@ function App() {
   const [activeModal, setActiveModal] = useState(false);
   const [contacts, setContacts] = useState([]);
 
+  const handleProductLike = useCallback((product) => {
+    const liked = isLiked(product.likes, currentUser?._id);
+    api.changeLikeProduct(product._id, liked).then((newCard) => {
+      const newProducts = cards.map((cardState) => {
+        return cardState._id === newCard._id ? newCard : cardState;});
+        if (!liked) {
+          setFavorites((prevState) => [... prevState, newCard]);
+        } else setFavorites ((prevState) => { return prevState.filter((card) => card._id !== newCard._id)});
+      setCards(newProducts);
+    });
+  },[cards, currentUser?._id])  // лайки
 
   const debounceSearchQuery = useDebounce(searchQuery, 1000);  // накопл знач запроса серч
 
@@ -90,17 +105,8 @@ function App() {
     });
   }  // изменен дан пользователя
 
-  function handleProductLike(product) {
-    const liked = isLiked(product.likes, currentUser?._id);
-    api.changeLikeProduct(product._id, liked).then((newCard) => {
-      const newProducts = cards.map((cardState) => {
-        return cardState._id === newCard._id ? newCard : cardState;});
-        if (!liked) {
-          setFavorites((prevState) => [... prevState, newCard]);
-        } else setFavorites ((prevState) => prevState.filter((card) => card._id !== newCard._id));
-      setCards(newProducts);
-    });
-  }  // лайки
+  
+  
 
 
   useEffect(() => {
@@ -138,9 +144,8 @@ function App() {
       </Header>
 
       <Modal activeModal={activeModal} setActiveModal={setActiveModal}>
-              <div style={{ width: '300px', height: '300px' }}>
-                <RegistrationForm addContact={addContact} />
-              </div>
+                {/* <RegistrationForm addContact={addContact} /> */}
+                <Login/>
             </Modal>
 
       <main className='content container'>
@@ -157,6 +162,21 @@ function App() {
           <Route path='/favorites' element={<Favorite currentUser={currentUser}/>}></Route>
           <Route path='*' element={<NoMatchFound />}></Route>
           <Route path='/registrationForm' element={<RegistrationForm/>}></Route>
+          <Route path='/login' element={
+                  <Modal activeModal={activeModal} setActiveModal={setActiveModal}>
+                    <Login />
+                  </Modal>}>
+          </Route>
+          <Route path='/register' element={
+                  <Modal activeModal={activeModal} setActiveModal={setActiveModal}>
+                    <Register />
+                  </Modal>}>
+          </Route>
+          <Route path='/reset-pass' element={
+                  <Modal activeModal={activeModal} setActiveModal={setActiveModal}>
+                    <ResetPassword />
+                  </Modal>}>
+          </Route> 
         </Routes>
       </main>
       <Footer />

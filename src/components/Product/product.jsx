@@ -4,8 +4,9 @@ import s from './index.module.css';
 import { ReactComponent as Save } from './img/save.svg';
 import truck from './img/truck.svg';
 import quality from './img/quality.svg';
-import { Link, useNavigate, useLocation, useParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Rating } from '../Rating/Rating';
+
 
 export const Product = ({
   pictures,
@@ -20,7 +21,8 @@ export const Product = ({
   const discount_price = Math.round(price - (price * discount) / 100);
   const isLike = likes.some((id) => id === currentUser?._id);
   const desctiptionHTML = { __html: description };
-
+   
+ 
 
   let navigate = useNavigate();
 
@@ -28,18 +30,10 @@ export const Product = ({
     navigate(-1);
   };
 
-  // const location = useLocation();
-
-  // useEffect(()=>{
-  //   if (location.search.includes('name=dear')) {
-  //     navigate('/');
-  //   }
-  // }, [location.search]);
 
 
   return (
     <>
-    <p>12333333</p>
       <div>
         <button onClick={handleClick} className='btn'>
           Назад
@@ -47,6 +41,7 @@ export const Product = ({
         <h1 className={s.productTitle}>{name}</h1>
         <div>
           <span> Артикул : </span> <b>#</b>
+          <Rating/>
         </div>
       </div>
       <div className={s.product}>
@@ -57,7 +52,7 @@ export const Product = ({
           <span className={discount ? s.oldPrice : s.price}>
             {price}&nbsp;₽
           </span>
-          {discount && (
+          {!!discount && (
             <span className={cn(s.price, 'card__price_type_discount')}>
               {discount_price}&nbsp;₽
             </span>
@@ -75,6 +70,7 @@ export const Product = ({
           <button
             className={cn(s.favorite, { [s.favoriteActive]: isLike })}
             onClick={onProductLike}
+            // onClick={() => onProductLike({ _id, likes })}
           >
             <Save />
             <span>{isLike ? 'В избранном' : 'В избранное'}</span>

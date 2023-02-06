@@ -5,37 +5,40 @@ import { Product } from '../../components/Product/product';
 import Spinner from '../../components/Spinner';
 import { UserContext } from '../../context/userContext';
 import api from '../../utils/api';
+import { CardContext } from '../../context/cardContext';
 
 
-export const ProductPage = ({ currentUser }) => {
-  // const [currentUser, setCurrentUser] = useState(null);
+
+
+export const ProductPage = () => {
+  const [currentUser, setCurrentUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [product, setProduct] = useState(null);
   const { handleProductLike } = useContext(UserContext);
+  const { favorites } = useContext(CardContext);
+
 
 
   const onProductLike = () => {
     handleProductLike(product);
+    setProduct({ ...product });
   };
 
   const { productId } = useParams();
 
 
-  
-
   useEffect(() => {
     setIsLoading(true);
-    // api.getUserInfo().then((userData) => setCurrentUser(userData));
+    api.getUserInfo().then((userData) => setCurrentUser(userData));
     api
       .getProductById(productId)
       .then((productData) => setProduct(productData))
       .catch((err) => console.log('err', err))
       .finally(() => setIsLoading(false));
-  }, [productId]);
+  }, [productId,favorites]);
 
   return (
     <>
-    <p>1233</p>
       <div className='content__cards'>
         {isLoading ? (
           <Spinner />

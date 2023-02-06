@@ -6,7 +6,6 @@ import viber from "./img/viber.svg";
 import whatsapp from "./img/whatsapp.svg";
 import vk from "./img/vk.svg";
 import Logo from "../Logo/logo";
-import { FaqPage } from "../../pages/faq/faq-page";
 import { Link } from "react-router-dom";
 
 const Footer = () => {

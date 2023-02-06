@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import { Link } from "react-router-dom";
 import CardList from "../../components/CardList/card-list";
 import { CardContext } from "../../context/cardContext";
 import { UserContext } from "../../context/userContext";

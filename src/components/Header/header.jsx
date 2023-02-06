@@ -26,7 +26,7 @@ function Header({ children, user, onUpdateUser , setActiveModal}) {
         </button>
 
         <div className={s.wrapper}>{children}
-        <span style={{ cursor: 'pointer' }} onClick={()=>setActiveModal(true)}>Регистрация</span>
+        <Link to='/login' style={{ cursor: 'pointer' }} onClick={()=>setActiveModal(true)}>Вход</Link>
         <div className={s.iconsMenu}>
           <Link className={s.favoritesLink} to='/favorites'> 
           <FavIcon />
