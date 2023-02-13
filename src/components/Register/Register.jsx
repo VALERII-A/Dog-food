@@ -7,7 +7,7 @@ import {
 } from '../../constants/constants';
 import BaseButton from '../BaseButton/BaseButton';
 import { Form } from '../Form/Form';
-import '../Login/style.css';
+import '../Login/style.scss';
 
 const Register = () => {
   const {

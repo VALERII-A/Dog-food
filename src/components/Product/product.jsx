@@ -1,11 +1,12 @@
 import cn from 'classnames';
-import React from 'react';
-import s from './index.module.css';
+import React, { useEffect,useMemo,useState } from 'react';
+import s from './index.module.scss';
 import { ReactComponent as Save } from './img/save.svg';
 import truck from './img/truck.svg';
 import quality from './img/quality.svg';
 import { useNavigate } from 'react-router-dom';
 import { Rating } from '../Rating/Rating';
+import api from '../../utils/api';
 
 
 export const Product = ({
@@ -17,11 +18,18 @@ export const Product = ({
   likes = [],
   currentUser,
   description,
+  _id,
+  reviews,
 }) => {
+
+  const ratingCount = useMemo(() => Math.round(reviews.reduce((acc, r) => acc = acc + r.rating, 0)/reviews.length), [reviews])
+
+  const [users, setUsers] = useState([]);
+
+
   const discount_price = Math.round(price - (price * discount) / 100);
   const isLike = likes.some((id) => id === currentUser?._id);
-  const desctiptionHTML = { __html: description };
-   
+  const desctiptionHTML = { __html: description };   
  
 
   let navigate = useNavigate();
@@ -29,6 +37,22 @@ export const Product = ({
   const handleClick = () => {
     navigate(-1);
   };
+
+  const getUser = (id) => {
+    if (!users.length) return 'User';
+    const user = users.find((el) => el._id === id);
+    return user?.name ?? 'User';
+  };
+
+  const options = {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  };
+
+  useEffect(()=>{
+    api.getUsers().then((data)=>setUsers(data))
+  },[]);
 
 
 
@@ -39,9 +63,10 @@ export const Product = ({
           Назад
         </button>
         <h1 className={s.productTitle}>{name}</h1>
-        <div>
-          <span> Артикул : </span> <b>#</b>
-          <Rating/>
+        <div className={s.rateInfo}>
+          <span> Артикул : <b>{_id}</b> </span>
+          <Rating isEditable={true} rating={ratingCount}/>
+          <span className={s.reviewsCount}>{reviews?.length} отзывов</span>
         </div>
       </div>
       <div className={s.product}>
@@ -70,7 +95,6 @@ export const Product = ({
           <button
             className={cn(s.favorite, { [s.favoriteActive]: isLike })}
             onClick={onProductLike}
-            // onClick={() => onProductLike({ _id, likes })}
           >
             <Save />
             <span>{isLike ? 'В избранном' : 'В избранное'}</span>
@@ -122,6 +146,27 @@ export const Product = ({
             <p>Следует учесть высокую калорийность продукта.</p>
           </div>
         </div>
+      </div>
+      <div className={s.reviews}>
+        <div className={s.reviews__control}>
+          <span className={s.reviews__title}>Отзывы</span>
+          <button className={s.reviews__btn}>Написать отзыв</button>
+        </div>
+        {reviews?.map((e) => (
+          <div className={s.review}>
+            <div className={s.review__author}>
+              <div>
+                <span>{getUser(e.author)} </span>
+                <span className={s.review__date}>
+                  {new Date(e.created_at).toLocaleString('ru', options)}
+                </span>
+              </div>
+              <Rating rating={e.rating} />
+            </div>
+            <div className={s.text}>
+              <span>{e.text}</span>
+            </div>
+          </div>))}
       </div>
     </>
   );

@@ -4,7 +4,7 @@ import Footer from '../Footer/footer';
 import Header from '../Header/header';
 import Logo from '../Logo/logo';
 import Search from '../Search/search';
-import './index.css';
+import './index.scss';
 import SeachInfo from '../SeachInfo';
 import api from '../../utils/api';
 import { ProductPage } from '../../pages/product/product';
@@ -26,6 +26,9 @@ import ResetPassword from '../ResetPassword/ResetPassword';
 
 
 function App() {
+  const [isLoading, setIsLoading] = useState(false);
+
+
   const [cards, setCards] = useState([]);  // карточки
   const [searchQuery, setSearchQuery] = useState('');  // реагирует на запросы.поисковой запрос
   const [currentUser, setCurrentUser] = useState(null);  // текущ пользователь
@@ -114,6 +117,7 @@ function App() {
   }, [debounceSearchQuery]); // выз обраб-ки запр-са посл изм-я дебаунс
 
   useEffect(() => {
+    setIsLoading(true) 
     Promise.all([api.getProductsList(), api.getUserInfo()]).then(
       ([productsData, userData]) => {
         setCards(productsData.products);

@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { CardContext } from '../../context/cardContext';
-import './index.css'
+import './index.scss'
 
 
 const Sort = () => {

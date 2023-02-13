@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import BaseButton from "../BaseButton/BaseButton";
 import { Form } from "../Form/Form";
-import './style.css';
+import './style.scss';
 import { EMAIL_REGEXP, PASS_REGEXP, VALIDATE_CONFIG, } from '../../constants/constants';
 import { useNavigate } from "react-router-dom";
 
@@ -48,7 +48,7 @@ return (<>
     placeholder="Email"
     required
   />
-  {errors.email && (<p className="auth_error">{errors?.email?.message}</p>)}
+  {errors.email && (<p className="auth__error">{errors?.email?.message}</p>)}
 
   <input
    {...passwordRegister}

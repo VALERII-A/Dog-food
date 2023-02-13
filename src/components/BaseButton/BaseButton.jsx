@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import s from './index.module.css';
+import s from './index.module.scss';
 
 const BaseButton = ({children, color, ...props})=> {
     return (

@@ -42,7 +42,23 @@ class Api {
     return fetch(`${this._baseUrl}/products/${idProduct}`, {
         headers: this._headers
     }).then(onResponse)
-}
+  }
+  getUsersById(userId) {
+    return fetch(`${this._baseUrl}/v2/group-9/users/${userId}`, {
+      headers: this._headers,
+    }).then(onResponse);
+  }
+  getUsers() {
+    return fetch(`${this._baseUrl}/v2/group-9/users`, {
+      headers: this._headers,
+    }).then(onResponse);
+  }
+  deleteProductById(idProduct) {
+    return fetch(`${this._baseUrl}/products/${idProduct}`, {
+      headers: this._headers,
+      method: 'DELETE',
+    }).then(onResponse);
+  }
 }
 
 const config = {

@@ -207,3 +207,67 @@
 		padding: 14px 20px;
 	}
 }
+.reviews {
+	&__title {
+	  font-weight: 800;
+	  font-size: 24px;
+	  line-height: 28px;
+	  color: #1a1a1a;
+	  margin: 16px 0;
+	}
+	&__control {
+	  margin: 16px 0;
+	  display: flex;
+	  flex-direction: column;
+	  gap: 1rem;
+	}
+	&__btn {
+	  width: 10rem;
+	  padding: 12px;
+	  border-radius: 16px;
+	  border: 1px solid #cfd8dc;
+	  border-radius: 87px;
+	  background-color: transparent;
+	  cursor: pointer;
+	}
+  }
+  
+  .review {
+	&__author {
+	  display: flex;
+	  flex-direction: column;
+	  gap: 1rem;
+	  font-weight: 800;
+	  font-size: 20px;
+	  line-height: 24px;
+	  color: #1a1a1a;
+	}
+	&__date {
+	  font-weight: 400;
+	  font-size: 14px;
+	  line-height: 20px;
+	  color: #7b8e98;
+	}
+  }
+  .rateInfo {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	margin-top: 0.5rem;
+  }
+  .reviewsCount {
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 20px;
+	text-decoration-line: underline;
+	color: #ffaa0d;
+	cursor: pointer;
+  }
+  .text {
+	margin: 16px 0 20px 0;
+	color: #1a1a1a;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 20px;
+  }
+  

@@ -13,15 +13,15 @@
 
 .primary {
   background-color: #ffe44d;
-}
-.primary:hover {
-  background-color: #ffaa0d;
-  color: #f44336;
+  &:hover {
+    background-color: #ffaa0d;
+    color: #f44336;
+  }
 }
 
 .secondary {
   background-color: transparent;
-}
-.secondary:hover {
-  color: #f44336;
+  &:hover {
+    color: #f44336;
+  }
 }

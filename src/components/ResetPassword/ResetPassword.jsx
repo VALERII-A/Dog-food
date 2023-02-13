@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { EMAIL_REGEXP, VALIDATE_CONFIG } from '../../constants/constants';
 import  BaseButton from '../BaseButton/BaseButton';
 import { Form } from '../Form/Form';
-import '../Login/style.css';
+import '../Login/style.scss';
 
 const ResetPassword = () => {
   const {

@@ -2,7 +2,7 @@ import cn from 'classnames';
 import { Link } from 'react-router-dom';
 // import api from '../../utils/api';
 
-import './index.css';
+import './index.scss';
 import { ReactComponent as Save } from './save.svg';
 
 const Card = ({

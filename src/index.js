@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import './index.scss';
 import App from './components/App/app';
 // import { ProductPage } from './pages/product/product';
 import { BrowserRouter } from 'react-router-dom';

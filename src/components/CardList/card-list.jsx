@@ -1,5 +1,5 @@
 import Card from '../Card/card';
-import './index.css';
+import './index.scss';
 
 
 const CardList = ({ onProductLike, cards=[],currentUser }) => {
