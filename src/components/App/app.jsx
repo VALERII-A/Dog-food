@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-// import CardList from '../CardList/card-list';
 import Footer from '../Footer/footer';
 import Header from '../Header/header';
 import Logo from '../Logo/logo';
@@ -9,7 +8,7 @@ import SeachInfo from '../SeachInfo';
 import api from '../../utils/api';
 import { ProductPage } from '../../pages/product/product';
 import { CatalogPage } from '../../pages/catalog/catalog';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import { NoMatchFound } from '../../pages/NoMatchFound/NoMatchFound';
 import useDebounce from '../../hooks/useDebounce';
 import { UserContext } from '../../context/userContext';
@@ -36,6 +35,8 @@ function App() {
   // const [view, setView] = useState(false);
   const [activeModal, setActiveModal] = useState(false);
   const [contacts, setContacts] = useState([]);
+  const [isAuthentificated, setAuthentificated] = useState(false);
+
 
   const handleProductLike = useCallback((product) => {
     const liked = isLiked(product.likes, currentUser?._id);
@@ -74,8 +75,8 @@ function App() {
 
   // const context = UserContext();
 
-  const sortedData = (currenSort) => {
-    switch (currenSort) {
+  const sortedData = (currentSort) => {
+    switch (currentSort) {
       case 'expensive': setCards([...cards.sort((a,b)=> b.price - a.price )]);  break;
       case 'cheep': setCards([...cards.sort((a,b)=> a?.price - b?.price )]);  break;
       case 'newest': setCards([...cards.sort((a,b)=> new Date(b?.created_at) - new Date(a?.created_at) )]);  break;
@@ -101,6 +102,26 @@ function App() {
     // api.createContact(contact)
   };
 
+  const location = useLocation();
+  const backgroundLocation = location.state?.backgroundLocation;
+  const initialPath = location.state?.initialPath;
+  
+  const authRoutes = (<>
+  <Route path='/login' element={
+          <Modal activeModal={activeModal} setActiveModal={setActiveModal}>
+            <Login />
+          </Modal>}>
+  </Route>
+  <Route path='/register' element={
+          <Modal activeModal={activeModal} setActiveModal={setActiveModal}>
+            <Register />
+          </Modal>}>
+  </Route>
+  <Route path='/reset-pass' element={
+          <Modal activeModal={activeModal} setActiveModal={setActiveModal}>
+            <ResetPassword />
+          </Modal>}>
+  </Route> </>);
 
   function handleUpdateUser(userUpdateData) {
     api.setUserInfo(userUpdateData).then((newUser) => {
@@ -108,8 +129,6 @@ function App() {
     });
   }  // изменен дан пользователя
 
-  
-  
 
 
   useEffect(() => {
@@ -129,12 +148,18 @@ function App() {
     );
   }, []); // сет карт и юзер
 
+  useEffect(() => {
+    const haveToken = localStorage.getItem('token');
+    setAuthentificated(!!haveToken);
+  }, [activeModal]);
+
 
   return (
     <>
     <CardContext.Provider value={valueProvider}>
     <UserContext.Provider value={userProvider}>
-      <Header user={currentUser} onUpdateUser={handleUpdateUser} setActiveModal={setActiveModal}>
+      <Header user={currentUser} onUpdateUser={handleUpdateUser} 
+       setActiveModal={setActiveModal} isAuthentificated={isAuthentificated}>
         <>
           <Logo className='logo logo_place_header'/>
           <Routes>
@@ -147,14 +172,11 @@ function App() {
         </>
       </Header>
 
-      <Modal activeModal={activeModal} setActiveModal={setActiveModal}>
-                {/* <RegistrationForm addContact={addContact} /> */}
-                <Login/>
-            </Modal>
-
+  
+      {isAuthentificated ? (
       <main className='content container'>
         <SeachInfo searchCount={cards.length} searchText={searchQuery} />
-        <Routes>
+        <Routes location={backgroundLocation && {...backgroundLocation, path:initialPath || location}}>
           <Route path='/'
             element={ <CatalogPage
                 cards={cards}
@@ -166,25 +188,19 @@ function App() {
           <Route path='/favorites' element={<Favorite currentUser={currentUser}/>}></Route>
           <Route path='*' element={<NoMatchFound />}></Route>
           <Route path='/registrationForm' element={<RegistrationForm/>}></Route>
-          <Route path='/login' element={
-                  <Modal activeModal={activeModal} setActiveModal={setActiveModal}>
-                    <Login />
-                  </Modal>}>
-          </Route>
-          <Route path='/register' element={
-                  <Modal activeModal={activeModal} setActiveModal={setActiveModal}>
-                    <Register />
-                  </Modal>}>
-          </Route>
-          <Route path='/reset-pass' element={
-                  <Modal activeModal={activeModal} setActiveModal={setActiveModal}>
-                    <ResetPassword />
-                  </Modal>}>
-          </Route> 
+          {authRoutes}
         </Routes>
-      </main>
+        {backgroundLocation && <Routes>{authRoutes}</Routes>}
+
+      </main> 
+      ) : (
+        <div className='not-auth'>
+          Нужно авторизоваться
+          <Routes>{authRoutes}</Routes>
+        </div>
+      )}
+
       <Footer />
-      
     </UserContext.Provider> 
     </CardContext.Provider> 
     </>

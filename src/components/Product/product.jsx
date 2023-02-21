@@ -2,11 +2,16 @@ import cn from 'classnames';
 import React, { useEffect,useMemo,useState } from 'react';
 import s from './index.module.scss';
 import { ReactComponent as Save } from './img/save.svg';
+import { ReactComponent as Basket } from './img/basket.svg';
 import truck from './img/truck.svg';
 import quality from './img/quality.svg';
 import { useNavigate } from 'react-router-dom';
 import { Rating } from '../Rating/Rating';
 import api from '../../utils/api';
+import BaseButton from '../BaseButton/BaseButton';
+import { Form } from '../Form/Form';
+import { useForm } from 'react-hook-form';
+import { VALIDATE_CONFIG } from '../../constants/constants';
 
 
 export const Product = ({
@@ -20,18 +25,19 @@ export const Product = ({
   description,
   _id,
   reviews,
+  onSendReview,
+  deleteReview, 
+  stock,
 }) => {
-
-  const ratingCount = useMemo(() => Math.round(reviews.reduce((acc, r) => acc = acc + r.rating, 0)/reviews.length), [reviews])
-
   const [users, setUsers] = useState([]);
-
+  const [showForm, setShowForm] = useState(false);
+  const [rating,setRating] = useState(5);
+  const [counterCart, setCounterCart] = useState(0);
 
   const discount_price = Math.round(price - (price * discount) / 100);
   const isLike = likes.some((id) => id === currentUser?._id);
   const desctiptionHTML = { __html: description };   
  
-
   let navigate = useNavigate();
 
   const handleClick = () => {
@@ -50,10 +56,42 @@ export const Product = ({
     year: 'numeric',
   };
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ mode: 'onBlur' });
+
+  const reviewRegister = register('text', {
+    required: {
+      value: true,
+      message: VALIDATE_CONFIG.requiredMessage,
+    },
+    minLength: { value: 5, message: 'Минимум 5 символов' },
+  });
+
+  const sendReview = (data) => {
+    onSendReview({...data, rating});
+    setShowForm(false);
+  };
+
+  const handleCart = () => {
+    const goods = localStorage.getItem('goods');
+    if (!goods) {
+      localStorage.setItem('goods', JSON.stringify([{ name, counterCart }]));
+    } else {
+      localStorage.setItem(
+        'goods',
+        JSON.stringify([...JSON.parse(goods), { name, counterCart }])
+      );
+    }
+  };
+  
+  // const ratingCount = useMemo(() => Math.round(reviews.reduce((acc, r) => acc = acc + r.rating, 0)/reviews.length), [reviews])
+
   useEffect(()=>{
     api.getUsers().then((data)=>setUsers(data))
   },[]);
-
 
 
   return (
@@ -65,7 +103,7 @@ export const Product = ({
         <h1 className={s.productTitle}>{name}</h1>
         <div className={s.rateInfo}>
           <span> Артикул : <b>{_id}</b> </span>
-          <Rating isEditable={true} rating={ratingCount}/>
+          <Rating isEditable={true} rating={rating} setRating={setRating}/>
           <span className={s.reviewsCount}>{reviews?.length} отзывов</span>
         </div>
       </div>
@@ -84,13 +122,18 @@ export const Product = ({
           )}
           <div className={s.btnWrap}>
             <div className={s.left}>
-              <button className={s.minus}>-</button>
-              <span className={s.num}>0</span>
-              <button className={s.plus}>+</button>
+              <button className={s.minus} onClick={() =>
+                  counterCart > 0 && setCounterCart(counterCart - 1)
+                }>-</button>
+              <span className={s.num}>{counterCart}</span>
+              <button className={s.plus} onClick={() =>
+                  stock > counterCart && setCounterCart(counterCart + 1)
+                }>+</button>
             </div>
-            <a href='/#' className={cn('btn', 'btn_type_primary', s.cart)}>
+            <button href='/#' className={cn('btn', 'btn_type_primary', s.cart)}
+            onClick={handleCart} >
               В корзину
-            </a>
+            </button>
           </div>
           <button
             className={cn(s.favorite, { [s.favoriteActive]: isLike })}
@@ -150,16 +193,51 @@ export const Product = ({
       <div className={s.reviews}>
         <div className={s.reviews__control}>
           <span className={s.reviews__title}>Отзывы</span>
-          <button className={s.reviews__btn}>Написать отзыв</button>
+          {!showForm ? <button className={s.reviews__btn}
+          onClick={()=>setShowForm(true)}
+          >Оставить отзыв</button> :
+        <Form 
+           className={s.form}
+           handleFormSubmit={handleSubmit(sendReview)}
+           title='Написать отзыв'>
+
+            <div className={s.form__rating}>
+            Общая оценка
+            <Rating isEditable={true} rating={rating} setRating={setRating}/>
+            </div>
+
+          <textarea
+            {...reviewRegister}
+            className={s.textarea}
+            type='text'
+            name='text'
+            placeholder='Поделитесь впечатлениями о товаре'
+          />
+          {errors.textarea && (
+            <p className='auth__error'>{errors?.textarea?.message}</p>
+          )}
+          <div className={s.form__btn}>
+            <BaseButton type='submit' color={'yellow'}>
+              Отправить
+            </BaseButton>
+          </div>
+        </Form>}
+
         </div>
-        {reviews?.map((e) => (
-          <div className={s.review}>
+        {reviews
+        ?.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+        .map((e) => (
+          <div key={e.created_at} className={s.review}>
             <div className={s.review__author}>
-              <div>
+              <div className={s.review__info}>
                 <span>{getUser(e.author)} </span>
                 <span className={s.review__date}>
                   {new Date(e.created_at).toLocaleString('ru', options)}
                 </span>
+                {e.author === currentUser?._id && 
+                (<span className={s.basket} onClick={() => deleteReview(e._id)}>
+                  <Basket/>
+                </span>)}
               </div>
               <Rating rating={e.rating} />
             </div>

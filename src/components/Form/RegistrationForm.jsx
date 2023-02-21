@@ -8,7 +8,7 @@ const RegistrationForm = () => {
         const user = data;
         
         console.log(user);
-        localStorage.setItem('user', JSON.stringify(user));
+        // localStorage.setItem('user', JSON.stringify(user));
       
     };
 

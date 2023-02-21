@@ -5,6 +5,7 @@ import {
   PASS_REGEXP,
   VALIDATE_CONFIG,
 } from '../../constants/constants';
+import authApi from '../../utils/authApi';
 import BaseButton from '../BaseButton/BaseButton';
 import { Form } from '../Form/Form';
 import '../Login/style.scss';
@@ -37,8 +38,14 @@ const Register = () => {
     },
   });
 
-  const sendData = (data) => {
+  const sendData = async (data) => {
     console.log({ data });
+    try {
+      await authApi.register({...data, group: 'group-9'});
+    } catch (error) {
+      console.log(error);
+    }
+    
   };
 
   const navigate = useNavigate();

@@ -17,7 +17,7 @@ const handleChange = (id) => {
 
     return (
         <div className="sort"> {tabs.map(({id, title})=>(
-            <div className='sort__link' onClick={()=> handleChange(id)}>{title}</div>
+            <div key={id} className='sort__link' onClick={()=> handleChange(id)}>{title}</div>
         ))}</div>
     );
 };

@@ -4,10 +4,11 @@ import { Form } from "../Form/Form";
 import './style.scss';
 import { EMAIL_REGEXP, PASS_REGEXP, VALIDATE_CONFIG, } from '../../constants/constants';
 import { useNavigate } from "react-router-dom";
+import authApi from "../../utils/authApi";
 
 const Login = ()=> {
   const { register, handleSubmit, formState:{errors} } = useForm({mode: 'onBlur'});
-
+  const navigate = useNavigate();
 
 
   const emailRegister = register('email',{
@@ -31,11 +32,15 @@ const Login = ()=> {
     },
   });
 
-  const sendData = (data) => {
-    console.log({ data });  // поставить апи запрос,потом
-  };
+  const sendData = async (data) => {
+    try {
+    const result = await authApi.login(data);
+    localStorage.setItem(`token`,result.token);
+    navigate('/')
+    } catch (error) {
+      console.log(error);
+    }};
 
-  const navigate = useNavigate();
 
 return (<>
  <Form handleFormSubmit={handleSubmit(sendData)} title='Вход'>

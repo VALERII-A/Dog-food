@@ -3,9 +3,9 @@ import { useEffect, useState, useCallback } from "react";
 import { ReactComponent as Star } from './star.svg';
 import s from './index.module.css';
 
-export const Rating = ({ rating, isEditable = false }) => {
+export const Rating = ({ rating, isEditable = false, setRating }) => {
   const [ratingArr, setRatingArr] = useState(new Array(5).fill(<></>));
-  const [ratingState, setRating] = useState(rating);
+  // const [ratingState, setRating] = useState(rating); 
 
   const changeDisplay = (rate) => {
     if (!isEditable) return; 
@@ -27,13 +27,13 @@ export const Rating = ({ rating, isEditable = false }) => {
             [s.editable]: !isEditable,
           })}
           onMouseEnter={() => changeDisplay(index + 1)}
-          onMouseLeave={() => changeDisplay(ratingState)}
+          onMouseLeave={() => changeDisplay(rating)}
           onClick={() => changeRating(index + 1)}
         />
       );
     });
     setRatingArr(updatedArray);
-  }, []);
+  }, [isEditable,rating]);
 
   useEffect(() => {
     constructRating(rating);

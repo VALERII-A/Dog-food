@@ -59,6 +59,19 @@ class Api {
       method: 'DELETE',
     }).then(onResponse);
   }
+  addReview(productId,body){
+    return fetch(`${this._baseUrl}/products/review/${productId}`, {
+      headers: this._headers,
+      method: 'POST',
+      body: JSON.stringify(body)
+    }).then(onResponse);
+  }
+  deleteReview(productId, reviewId){
+    return fetch(`${this._baseUrl}/products/review/${productId}/${reviewId}`, {
+      headers: this._headers,
+      method: 'DELETE',
+    }).then(onResponse);
+  }
 }
 
 const config = {
@@ -67,7 +80,7 @@ const config = {
     'content-type': 'application/json',
     Authorization:
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjJmOTk5MmFlNWM0MGMxMGMxMWRmZTQiLCJpYXQiOjE2NDcyODY2ODEsImV4cCI6MTY3ODgyMjY4MX0.WHKXAErKZtY445yXecOFZsx981MuXicJti-okSY-tac',
-  },
+  }
 };
 
 const api = new Api(config);
