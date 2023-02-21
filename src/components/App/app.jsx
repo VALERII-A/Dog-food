@@ -146,7 +146,7 @@ function App() {
       setFavorites(favProducts);
       }
     );
-  }, []); // сет карт и юзер
+  }, [ favorites ]); // сет карт и юзер
 
   useEffect(() => {
     const haveToken = localStorage.getItem('token');
