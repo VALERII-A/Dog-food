@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Product } from '../../components/Product/product';
 import { UserContext } from '../../context/userContext';
@@ -11,7 +11,7 @@ import { openNotification } from '../../components/Notification/Notification';
 
 export const ProductPage = () => {
   const { handleProductLike, currentUser } = useContext(UserContext);
-  const { cards } = useContext(CardContext);
+  const { cards, setCards } = useContext(CardContext);
   const { productId } = useParams();
   
   
@@ -22,11 +22,16 @@ export const ProductPage = () => {
     handleProductLike(product);
   };
 
+  const updateCards = (result) => {
+    const newCards = cards.map(e => productId === e._id ? result : e);
+    setCards([...newCards])
+  };
+
   const onSendReview = async (data) => {
     try {
       const result = await api.addReview(product._id, data);
+      updateCards(result);
       openNotification('success', 'Success', 'Ваш отзыв успешно отправлен');
-      // setProduct({ ...result });
     } catch (error) {
       openNotification('error', 'Error', 'Не получилось отправить отзыв');
     }
@@ -34,16 +39,13 @@ export const ProductPage = () => {
   const deleteReview = async (id) => {
     try {
       const result = await api.deleteReview(product._id, id);
-      // setProduct({ ...result });
+      updateCards(result);
       openNotification('success', 'Success', 'Ваш отзыв успешно удален');
     } catch (error) {
       openNotification('error', 'Error', 'Не получилось удалить отзыв');
     }
   };
 
-  // useEffect(()=>{
-    
-  // },[product]);
 
 
   return (

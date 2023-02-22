@@ -28,13 +28,13 @@ function Header({ children, user, onUpdateUser , setActiveModal,isAuthentificate
 
         <div className={s.wrapper}>
           {children}
-          {/* {!isAuthentificated &&  */}
+          {!isAuthentificated && 
           <div>
          <Link to='/login' style={{ cursor: 'pointer' }} onClick={()=>setActiveModal(true)}
           state = {{backgroundLocation: location, initialPath: location.pathname}}
          >Вход</Link>
         </div>
-        {/* } */}
+        }
         <div className={s.iconsMenu}>
           <Link className={s.favoritesLink} to='/favorites'> 
           <FavIcon />

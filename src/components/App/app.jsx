@@ -22,6 +22,7 @@ import { useCallback } from 'react';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
 import ResetPassword from '../ResetPassword/ResetPassword';
+import { PrivateRoute } from '../PrivateRoute/PrivateRoute';
 
 
 function App() {
@@ -91,6 +92,7 @@ function App() {
     cards,
     favorites,
     onSortData: sortedData,
+    setCards,
   };
   const userProvider = {
     handleProductLike ,
@@ -146,7 +148,7 @@ function App() {
       setFavorites(favProducts);
       }
     );
-  }, [ favorites ]); // сет карт и юзер
+  }, []); // сет карт и юзер
 
   useEffect(() => {
     const haveToken = localStorage.getItem('token');
@@ -185,7 +187,14 @@ function App() {
           ></Route>
           <Route path='/product/:productId' element={<ProductPage currentUser={currentUser}/>}></Route>
           <Route path='/faq' element={<FaqPage />}></Route>
-          <Route path='/favorites' element={<Favorite currentUser={currentUser}/>}></Route>
+          
+            <Route path='/favorites' element={
+              <PrivateRoute loggedIn={false}>
+                <Favorite currentUser={currentUser}/>
+              </PrivateRoute>
+            }>
+            </Route>
+          
           <Route path='*' element={<NoMatchFound />}></Route>
           <Route path='/registrationForm' element={<RegistrationForm/>}></Route>
           {authRoutes}

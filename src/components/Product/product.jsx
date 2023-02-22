@@ -33,6 +33,7 @@ export const Product = ({
   const [showForm, setShowForm] = useState(false);
   const [rating,setRating] = useState(5);
   const [counterCart, setCounterCart] = useState(0);
+  const [reviewsProduct, setReviewsProduct] = useState(reviews?.slice(0, 2));
 
   const discount_price = Math.round(price - (price * discount) / 100);
   const isLike = likes.some((id) => id === currentUser?._id);
@@ -86,6 +87,13 @@ export const Product = ({
       );
     }
   };
+
+  const showMore = () => {
+    setReviewsProduct((state) => [...reviews.slice(0, state.length + 2)]);
+  };
+  const hideReview = () => {
+    setReviewsProduct((state) => [...reviews.slice(0, 2)]);
+  };
   
   // const ratingCount = useMemo(() => Math.round(reviews.reduce((acc, r) => acc = acc + r.rating, 0)/reviews.length), [reviews])
 
@@ -104,7 +112,7 @@ export const Product = ({
         <div className={s.rateInfo}>
           <span> Артикул : <b>{_id}</b> </span>
           <Rating isEditable={true} rating={rating} setRating={setRating}/>
-          <span className={s.reviewsCount}>{reviews?.length} отзывов</span>
+          <span className={s.reviewsCount}>{reviewsProduct?.length} отзывов</span>
         </div>
       </div>
       <div className={s.product}>
@@ -193,8 +201,15 @@ export const Product = ({
       <div className={s.reviews}>
         <div className={s.reviews__control}>
           <span className={s.reviews__title}>Отзывы</span>
-          {!showForm ? <button className={s.reviews__btn}
-          onClick={()=>setShowForm(true)}
+          <span className={s.reviews__more} onClick={showMore}>
+            Еще отзывы
+          </span>
+          <span className={s.reviews__more} onClick={hideReview}>
+            Свернуть
+          </span>
+          {!showForm ? 
+          <button className={s.reviews__btn}
+            onClick={()=>setShowForm(true)}
           >Оставить отзыв</button> :
         <Form 
            className={s.form}
@@ -224,7 +239,7 @@ export const Product = ({
         </Form>}
 
         </div>
-        {reviews
+        {reviewsProduct
         ?.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
         .map((e) => (
           <div key={e.created_at} className={s.review}>

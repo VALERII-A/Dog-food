@@ -230,6 +230,11 @@
 	  background-color: transparent;
 	  cursor: pointer;
 	}
+	&__more {
+		text-decoration: underline;
+		color: #ffaa0d;
+		cursor: pointer;
+	  }
   }
   
   .review {
