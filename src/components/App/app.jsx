@@ -34,7 +34,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null);  // текущ пользователь
   const [favorites, setFavorites] = useState([]);
   // const [view, setView] = useState(false);
-  const [activeModal, setActiveModal] = useState(false);
+  const [activeModal, setActiveModal] = useState(true);
   const [contacts, setContacts] = useState([]);
   const [isAuthentificated, setAuthentificated] = useState(false);
 
@@ -175,7 +175,7 @@ function App() {
       </Header>
 
   
-      {isAuthentificated ? (
+      {/* {isAuthentificated ? ( */}
       <main className='content container'>
         <SeachInfo searchCount={cards.length} searchText={searchQuery} />
         <Routes location={backgroundLocation && {...backgroundLocation, path:initialPath || location}}>
@@ -202,12 +202,12 @@ function App() {
         {backgroundLocation && <Routes>{authRoutes}</Routes>}
 
       </main> 
-      ) : (
-        <div className='not-auth'>
-          Нужно авторизоваться
-          <Routes>{authRoutes}</Routes>
-        </div>
-      )}
+      {/* // ) : ( */}
+        {/* // <div className='not-auth'> */}
+          {/* Нужно авторизоваться */}
+          {/* <Routes>{authRoutes}</Routes> */}
+        {/* </div> */}
+      {/* // )} */}
 
       <Footer />
     </UserContext.Provider> 
