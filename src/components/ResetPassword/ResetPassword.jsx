@@ -7,8 +7,9 @@ import  BaseButton from '../BaseButton/BaseButton';
 import { Form } from '../Form/Form';
 import { parseJwt } from '../../utils/parseJWT';
 import '../Login/style.scss';
+import { json, Navigate, useNavigate } from 'react-router-dom';
 
-const ResetPassword = () => {
+const ResetPassword = ({setAuthentificated}) => {
   const {
     register,
     handleSubmit,
@@ -17,6 +18,7 @@ const ResetPassword = () => {
 
   const { currentUser } = useContext(UserContext);
   const [tokenResp, setTokenResp] = useState(null);
+  const navigate = useNavigate();
 
   const emailRegister = register('email', {
     required: {
@@ -29,13 +31,17 @@ const ResetPassword = () => {
     },
   });
 
-  const sendData = async (data) => {
+  const sendData = async (formData) => {
     if (tokenResp) {
-      const {_id} = parseJwt(data.token);
-      await authApi.resetPassToken({ password: data.password }, _id, data.token);
-    }
-    else {
-      await authApi.resetPass(data);
+     const {token,data} = await authApi.resetPassToken({ password: formData.password },formData.token)
+      if (token) {
+        localStorage.setItem('token', token);
+        localStorage.setItem('userData', JSON.stringify(data));
+        setAuthentificated(true)
+        navigate('/')
+      }
+    } else {
+      await authApi.resetPass(formData);
       setTokenResp(true);
     }
   };

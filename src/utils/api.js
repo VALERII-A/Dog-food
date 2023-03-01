@@ -3,9 +3,10 @@ const onResponse = (res) => {
 };
 
 class Api {
-  constructor({ baseUrl, headers }) {
+  constructor({ baseUrl, headers,configFunc }) {
     this._headers = headers;
     this._baseUrl = baseUrl;
+    this._configFunc = configFunc;
   }
   getProductsList() {
     return fetch(`${this._baseUrl}/products`, { headers: this._headers }).then(
@@ -13,20 +14,20 @@ class Api {
     );
   }
   getUserInfo() {
-    return fetch(`${this._baseUrl}/users/me`, { headers: this._headers }).then(
+    return fetch(`${this._baseUrl}/users/me`, this._configFunc()).then(
       onResponse
     );
   }
   search(searchQuery) {
 
-    return fetch(`${this._baseUrl}/products/search?query=${searchQuery}`, {
-      headers: this._headers,
-    }).then(onResponse);
+    return fetch(`${this._baseUrl}/products/search?query=${searchQuery}`, 
+      this._configFunc()
+    ).then(onResponse);
   }
   setUserInfo(dataUser) {
     console.log({ dataUser });
     return fetch(`${this._baseUrl}/users/me`, {
-      headers: this._headers,
+      ...this._configFunc(),
       method: 'PATCH',
       body: JSON.stringify(dataUser),
     }).then(onResponse);
@@ -34,54 +35,64 @@ class Api {
   changeLikeProduct(productId, isLike) {
     return fetch(`${this._baseUrl}/products/likes/${productId}`, {
       method: isLike ? 'DELETE' : 'PUT',
-      headers: this._headers,
+      ...this._configFunc(),
     }).then(onResponse);
   }
 
   getProductById(idProduct) {
-    return fetch(`${this._baseUrl}/products/${idProduct}`, {
-        headers: this._headers
-    }).then(onResponse)
+    return fetch(`${this._baseUrl}/products/${idProduct}`, 
+    this._configFunc()
+    ).then(onResponse)
   }
   getUsersById(userId) {
     return fetch(`${this._baseUrl}/v2/group-9/users/${userId}`, {
-      headers: this._headers,
+      ...this._configFunc(),
     }).then(onResponse);
   }
   getUsers() {
-    return fetch(`${this._baseUrl}/v2/group-9/users`, {
-      headers: this._headers,
-    }).then(onResponse);
+    return fetch(`${this._baseUrl}/v2/group-9/users`, 
+    this._configFunc()
+    ).then(onResponse);
   }
   deleteProductById(idProduct) {
     return fetch(`${this._baseUrl}/products/${idProduct}`, {
-      headers: this._headers,
+      ...this._configFunc(),
       method: 'DELETE',
     }).then(onResponse);
   }
   addReview(productId,body){
     return fetch(`${this._baseUrl}/products/review/${productId}`, {
-      headers: this._headers,
+      ...this._configFunc(),
       method: 'POST',
       body: JSON.stringify(body)
     }).then(onResponse);
   }
   deleteReview(productId, reviewId){
     return fetch(`${this._baseUrl}/products/review/${productId}/${reviewId}`, {
-      headers: this._headers,
+      ...this._configFunc(),
       method: 'DELETE',
     }).then(onResponse);
   }
 }
 
+const configFunc = () => {
+  return {
+    headers: {
+      "content-type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  };
+};
 const config = {
   baseUrl: 'https://api.react-learning.ru',
   headers: {
     'content-type': 'application/json',
-    Authorization:
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjJmOTk5MmFlNWM0MGMxMGMxMWRmZTQiLCJpYXQiOjE2NDcyODY2ODEsImV4cCI6MTY3ODgyMjY4MX0.WHKXAErKZtY445yXecOFZsx981MuXicJti-okSY-tac',
-  }
+    Authorization:`Bearer ${localStorage.getItem("token")}`,
+  },
+  configFunc: configFunc
 };
+
+
 
 const api = new Api(config);
 

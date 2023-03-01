@@ -29,12 +29,14 @@
 
 .iconsMenu {
 	display: flex;
+	gap: 0.8rem;
 }
 
 .favoritesLink {
 	position: relative;
 	width: 34px;
 	height: 34px;
+	cursor: pointer;
 }
 .iconsMenu svg{
 	width: 100%;

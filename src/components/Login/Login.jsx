@@ -2,40 +2,23 @@ import { useForm } from "react-hook-form";
 import BaseButton from "../BaseButton/BaseButton";
 import { Form } from "../Form/Form";
 import './style.scss';
-import { EMAIL_REGEXP, PASS_REGEXP, VALIDATE_CONFIG, } from '../../constants/constants';
 import { useNavigate } from "react-router-dom";
 import authApi from "../../utils/authApi";
+import { UserContext } from "../../context/userContext";
+import { useContext } from "react";
+import { emailRegister, passwordRegister, } from "../../utils/utils";
 
 const Login = ()=> {
   const { register, handleSubmit, formState:{errors} } = useForm({mode: 'onBlur'});
   const navigate = useNavigate();
+  const { setAuthentificated } = useContext(UserContext)
 
-
-  const emailRegister = register('email',{
-    required: {
-        value: true,
-        message: VALIDATE_CONFIG.requiredMessage
-    },
-     pattern: {
-        value:EMAIL_REGEXP,
-        message: VALIDATE_CONFIG.email
-    }
-  });
-  const passwordRegister = register('password', {
-    required: {
-      value: true,
-      message: VALIDATE_CONFIG.requiredMessage,
-    },
-    pattern: {
-      value: PASS_REGEXP,
-      message: VALIDATE_CONFIG.password,
-    },
-  });
 
   const sendData = async (data) => {
     try {
     const result = await authApi.login(data);
     localStorage.setItem(`token`,result.token);
+    setAuthentificated(true);
     navigate('/')
     } catch (error) {
       console.log(error);
@@ -46,7 +29,7 @@ return (<>
  <Form handleFormSubmit={handleSubmit(sendData)} title='Вход'>
  <div className="auth__controls">
   <input
-   {...emailRegister}
+   {...emailRegister(register)}
     className="auth__input"
     type='email'
     name="email"
@@ -56,7 +39,7 @@ return (<>
   {errors.email && (<p className="auth__error">{errors?.email?.message}</p>)}
 
   <input
-   {...passwordRegister}
+   {...passwordRegister(register)}
     className='auth__input'
     type='password'
     name="password"

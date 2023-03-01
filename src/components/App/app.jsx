@@ -23,19 +23,16 @@ import Login from '../Login/Login';
 import Register from '../Register/Register';
 import ResetPassword from '../ResetPassword/ResetPassword';
 import { PrivateRoute } from '../PrivateRoute/PrivateRoute';
+import { Profile } from '../Profile/Profile';
 
 
 function App() {
-  const [isLoading, setIsLoading] = useState(false);
-
-
   const [cards, setCards] = useState([]);  // карточки
   const [searchQuery, setSearchQuery] = useState('');  // реагирует на запросы.поисковой запрос
   const [currentUser, setCurrentUser] = useState(null);  // текущ пользователь
   const [favorites, setFavorites] = useState([]);
   // const [view, setView] = useState(false);
   const [activeModal, setActiveModal] = useState(true);
-  const [contacts, setContacts] = useState([]);
   const [isAuthentificated, setAuthentificated] = useState(false);
 
 
@@ -45,7 +42,7 @@ function App() {
       const newProducts = cards.map((cardState) => {
         return cardState._id === newCard._id ? newCard : cardState;});
         if (!liked) {
-          setFavorites((prevState) => [... prevState, newCard]);
+          setFavorites((prevState) => [...prevState, newCard]);
         } else setFavorites ((prevState) => { return prevState.filter((card) => card._id !== newCard._id)});
       setCards(newProducts);
     });
@@ -54,11 +51,6 @@ function App() {
   const debounceSearchQuery = useDebounce(searchQuery, 1000);  // накопл знач запроса серч
 
   const handleRequest = () => {
-    // const filterCards = cards.filter((item) =>
-    //   item.name.toUpperCase().includes(searchQuery.toUpperCase())
-    // );
-    // setCards(filterCards);
-
     api
       .search(searchQuery)
       .then((res) => setCards(res))
@@ -70,11 +62,6 @@ function App() {
     handleRequest();
   }; // обработка отправки формы
 
-  // const handleInputChange = (inputValue) => {
-  //   setSearchQuery(inputValue);
-  // }; // обраб измен вход-х дан-х
-
-  // const context = UserContext();
 
   const sortedData = (currentSort) => {
     switch (currentSort) {
@@ -96,13 +83,12 @@ function App() {
   };
   const userProvider = {
     handleProductLike ,
-     currentUser
+     currentUser,
+     isAuthentificated,
+     setActiveModal,
+     setAuthentificated,
   };
 
-  const addContact = (contact) => {
-    setContacts([...contacts, contact]);
-    // api.createContact(contact)
-  };
 
   const location = useLocation();
   const backgroundLocation = location.state?.backgroundLocation;
@@ -121,7 +107,7 @@ function App() {
   </Route>
   <Route path='/reset-pass' element={
           <Modal activeModal={activeModal} setActiveModal={setActiveModal}>
-            <ResetPassword />
+            <ResetPassword setAuthentificated={setAuthentificated} />
           </Modal>}>
   </Route> </>);
 
@@ -134,11 +120,16 @@ function App() {
 
 
   useEffect(() => {
+    if (!isAuthentificated) {
+      return;
+    }
     handleRequest();
   }, [debounceSearchQuery]); // выз обраб-ки запр-са посл изм-я дебаунс
 
   useEffect(() => {
-    setIsLoading(true) 
+    if (!isAuthentificated) {
+      return;
+    }
     Promise.all([api.getProductsList(), api.getUserInfo()]).then(
       ([productsData, userData]) => {
         setCards(productsData.products);
@@ -148,34 +139,27 @@ function App() {
       setFavorites(favProducts);
       }
     );
-  }, []); // сет карт и юзер
+  }, [isAuthentificated]); // сет карт и юзер
 
   useEffect(() => {
     const haveToken = localStorage.getItem('token');
     setAuthentificated(!!haveToken);
-  }, [activeModal]);
+  });
 
 
   return (
     <>
     <CardContext.Provider value={valueProvider}>
     <UserContext.Provider value={userProvider}>
-      <Header user={currentUser} onUpdateUser={handleUpdateUser} 
-       setActiveModal={setActiveModal} isAuthentificated={isAuthentificated}>
+      <Header user={currentUser} onUpdateUser={handleUpdateUser}>
         <>
           <Logo className='logo logo_place_header'/>
-          <Routes>
-            <Route path='/'
-              element={ <Search
+            <Search
                   onSubmit={handleFormSubmit}
-                  onInput={setSearchQuery} />}
-            ></Route>
-          </Routes>
+                  onInput={setSearchQuery} />
         </>
       </Header>
-
-  
-      {/* {isAuthentificated ? ( */}
+    {/* {isAuthentificated ? ( */}
       <main className='content container'>
         <SeachInfo searchCount={cards.length} searchText={searchQuery} />
         <Routes location={backgroundLocation && {...backgroundLocation, path:initialPath || location}}>
@@ -186,10 +170,11 @@ function App() {
                 handleProductLike={handleProductLike} />}
           ></Route>
           <Route path='/product/:productId' element={<ProductPage currentUser={currentUser}/>}></Route>
+          <Route path='/profile' element={<Profile />}></Route>
           <Route path='/faq' element={<FaqPage />}></Route>
           
             <Route path='/favorites' element={
-              <PrivateRoute loggedIn={false}>
+              <PrivateRoute loggedIn={isAuthentificated}>
                 <Favorite currentUser={currentUser}/>
               </PrivateRoute>
             }>
@@ -200,14 +185,12 @@ function App() {
           {authRoutes}
         </Routes>
         {backgroundLocation && <Routes>{authRoutes}</Routes>}
-
-      </main> 
-      {/* // ) : ( */}
-        {/* // <div className='not-auth'> */}
-          {/* Нужно авторизоваться */}
-          {/* <Routes>{authRoutes}</Routes> */}
-        {/* </div> */}
-      {/* // )} */}
+      </main>
+      {/* //  ) : (
+      //    <div className="not-auth">
+      //           Авторизуйтесь пожалуйста
+      //       <Routes>{authRoutes}</Routes>
+      //    </div> )} */}
 
       <Footer />
     </UserContext.Provider> 

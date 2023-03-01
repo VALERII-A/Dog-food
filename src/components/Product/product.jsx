@@ -33,7 +33,14 @@ export const Product = ({
   const [showForm, setShowForm] = useState(false);
   const [rating,setRating] = useState(5);
   const [counterCart, setCounterCart] = useState(0);
-  const [reviewsProduct, setReviewsProduct] = useState(reviews?.slice(0, 2));
+  const [reviewsProduct, setReviewsProduct] = useState([]);
+
+  useEffect(()=>{
+    if (reviews) {
+      setReviewsProduct(reviews.slice(0, 5));
+  }
+  },[reviews]);
+ 
 
   const discount_price = Math.round(price - (price * discount) / 100);
   const isLike = likes.some((id) => id === currentUser?._id);
