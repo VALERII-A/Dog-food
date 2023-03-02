@@ -159,7 +159,7 @@ function App() {
                   onInput={setSearchQuery} />
         </>
       </Header>
-    {/* {isAuthentificated ? ( */}
+    {isAuthentificated ? (
       <main className='content container'>
         <SeachInfo searchCount={cards.length} searchText={searchQuery} />
         <Routes location={backgroundLocation && {...backgroundLocation, path:initialPath || location}}>
@@ -186,11 +186,11 @@ function App() {
         </Routes>
         {backgroundLocation && <Routes>{authRoutes}</Routes>}
       </main>
-      {/* //  ) : (
-      //    <div className="not-auth">
-      //           Авторизуйтесь пожалуйста
-      //       <Routes>{authRoutes}</Routes>
-      //    </div> )} */}
+     ) : (
+        <div className="not-auth">
+                Авторизуйтесь пожалуйста
+           <Routes>{authRoutes}</Routes>
+        </div> )} 
 
       <Footer />
     </UserContext.Provider> 
