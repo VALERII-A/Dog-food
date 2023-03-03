@@ -119,7 +119,7 @@ export const Product = ({
         <div className={s.rateInfo}>
           <span> Артикул : <b>{_id}</b> </span>
           <Rating isEditable={true} rating={rating} setRating={setRating}/>
-          <span className={s.reviewsCount}>{reviewsProduct?.length} отзывов</span>
+          <span className={s.reviewsCount}>{reviews?.length} отзывов</span>
         </div>
       </div>
       <div className={s.product}>
