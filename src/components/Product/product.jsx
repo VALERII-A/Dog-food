@@ -28,6 +28,7 @@ export const Product = ({
   onSendReview,
   deleteReview, 
   stock,
+  wight
 }) => {
   const [users, setUsers] = useState([]);
   const [showForm, setShowForm] = useState(false);
@@ -40,11 +41,10 @@ export const Product = ({
       setReviewsProduct(reviews.slice(0, 5));
   }
   },[reviews]);
- 
 
+  
   const discount_price = Math.round(price - (price * discount) / 100);
   const isLike = likes.some((id) => id === currentUser?._id);
-  const desctiptionHTML = { __html: description };   
  
   let navigate = useNavigate();
 
@@ -179,11 +179,11 @@ export const Product = ({
       </div>
       <div className={s.box}>
         <h2 className={s.title}>Описание</h2>
-        <p className={s.subtitle} dangerouslySetInnerHTML={desctiptionHTML}></p>
+        <p className={s.subtitle}>{description}</p>
         <h2 className={s.title}>Характеристики</h2>
         <div className={s.grid}>
           <div className={s.naming}>Вес</div>
-          <div className={s.description}>1 шт 120-200 грамм</div>
+          <div className={s.description}>{wight}</div>
           <div className={s.naming}>Цена</div>
           <div className={s.description}>490 ₽ за 100 грамм</div>
           <div className={s.naming}>Польза</div>

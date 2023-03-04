@@ -15,8 +15,8 @@ export const ProductPage = () => {
   const { productId } = useParams();
   
   
-
   const product = cards.find(card => card._id === productId);
+
  
   const onProductLike = () => {
     handleProductLike(product);
