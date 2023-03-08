@@ -45,13 +45,9 @@ const sendData = async ({ about, name }) => {
   try {
     const bodyy = {avatar};
     const newUser = await api.editUserAvatar(bodyy);
-    console.log('запрос есть');
     setCurrentUser({ ...newUser });
-    console.log('картинка есть');
-    openNotification("Success","Аватар успешно изменен");
-    console.log('готово');
+    openNotification("success", "Success","Аватар успешно изменен");
   } catch (error) {
-    console.log('ошибка');
     openNotification("error", "Error", "Не удалось изменить аватар");
   }
 };

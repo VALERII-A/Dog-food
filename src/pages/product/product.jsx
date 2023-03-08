@@ -13,6 +13,7 @@ export const ProductPage = () => {
   const { handleProductLike, currentUser } = useContext(UserContext);
   const { cards, setCards } = useContext(CardContext);
   const { productId } = useParams();
+  const [reviews, setReviews] = useState([]);
   
   
   const product = cards.find(card => card._id === productId);
@@ -45,7 +46,12 @@ export const ProductPage = () => {
       openNotification('error', 'Error', 'Не получилось удалить отзыв');
     }
   };
-
+  
+  useEffect(() => {
+    if (product?.reviews && Array.isArray(product?.reviews)) {
+      setReviews([...product?.reviews?.sort((a,b) => new Date(b.updated_at) - new Date(a.updated_at))])
+    }
+  }, [product?.reviews]);
 
 
   return (
@@ -58,6 +64,7 @@ export const ProductPage = () => {
             // setProduct={setProduct}
             onSendReview={onSendReview}
             deleteReview={deleteReview}
+            reviews={reviews}
           />
       </div>
     </>
