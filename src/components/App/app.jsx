@@ -88,6 +88,7 @@ function App() {
      isAuthentificated,
      setActiveModal,
      setAuthentificated,
+     setCurrentUser
   };
 
 

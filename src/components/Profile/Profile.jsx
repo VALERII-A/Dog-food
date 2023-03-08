@@ -12,7 +12,7 @@ import './style.scss'
 export const Profile = () => {
 
 const navigate = useNavigate();
-const {currentUser} = useContext(UserContext);
+const {currentUser,setCurrentUser} = useContext(UserContext);
 const {
     register,
     handleSubmit,
@@ -29,19 +29,41 @@ const {
 const handleLogout = () => {
   localStorage.removeItem('token');
   navigate('/');
-;}  
+};  
 
-
- 
-
-  const sendData = async (data) => {
-    try {
-      await api.setUserInfo(data);
-      openNotification("success", "Success", "Данные успешно изменены");
-    } catch (error) {
-      openNotification("error", "Error", "Что-то пошло не так");
-    }
-  };
+const sendData = async ({ about, name }) => {
+   try {
+    const body = { about, name };
+    const newUser = await api.setUserInfo(body);
+    setCurrentUser({ ...newUser });
+     openNotification("success", "Success", "Данные успешно изменены");
+   } catch (error) {
+     openNotification("error", "Error", "Что-то пошло не так");
+   }
+ };
+ const changeAvatar = async ({avatar}) => {
+  try {
+    const bodyy = {avatar};
+    const newUser = await api.editUserAvatar(bodyy);
+    console.log('запрос есть');
+    setCurrentUser({ ...newUser });
+    console.log('картинка есть');
+    openNotification("Success","Аватар успешно изменен");
+    console.log('готово');
+  } catch (error) {
+    console.log('ошибка');
+    openNotification("error", "Error", "Не удалось изменить аватар");
+  }
+};
+// const changeAvatar = async (src) => {
+//   try {
+//     const newUser = await api.editUserAvatar({ avatar: src.avatar });
+//     setCurrentUser({ ...newUser });
+//     openNotification("Success","Аватар успешно изменен");
+//   } catch (error) {
+//     openNotification("error", "Error", "Не удалось изменить аватар");
+//   }
+// };
 
     return (<>
     <div className='profile'>
@@ -50,6 +72,30 @@ const handleLogout = () => {
             </span>
             <h1 className='profile__title'>Мои данные</h1>
         {currentUser ? (
+          <>
+          <Form className="" handleFormSubmit={handleSubmit(changeAvatar)}>
+              <div className="profile__avatar">
+                <img
+                  src={currentUser?.avatar}
+                  className="profile__image"
+                  alt="avatar"
+                />
+                <input
+                  {...register("avatar", required)}
+                  className="auth__input"
+                  type="text"
+                  name="avatar"
+                  placeholder="Avatar"
+                  defaultValue={currentUser?.avatar}
+                />
+                {errors.name && (
+                  <p className="auth__error">{errors?.name?.message}</p>
+                )}
+              </div>
+              <BaseButton type="submit" color={"yellow"}>
+                Изменить аватар
+              </BaseButton>
+            </Form>
          <Form className='' handleFormSubmit={handleSubmit(sendData)} >  
           <div className='profile__info'>
           <div>
@@ -97,6 +143,7 @@ const handleLogout = () => {
               Сохранить
             </BaseButton>
          </Form> 
+         </>
         ) : ( 
             <></>
         )}
