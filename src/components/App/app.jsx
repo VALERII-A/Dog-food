@@ -26,6 +26,7 @@ import { PrivateRoute } from '../PrivateRoute/PrivateRoute';
 import { Profile } from '../Profile/Profile';
 
 
+
 function App() {
   const [cards, setCards] = useState([]);  // карточки
   const [searchQuery, setSearchQuery] = useState('');  // реагирует на запросы.поисковой запрос
@@ -140,6 +141,7 @@ function App() {
       }
     );
   }, [isAuthentificated]); // сет карт и юзер
+
 
   useEffect(() => {
     const haveToken = localStorage.getItem('token');
