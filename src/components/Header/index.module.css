@@ -59,3 +59,9 @@
 	bottom: 60%;
 	left: 70%;
 }
+.lang {
+	cursor: pointer;
+	font-weight: 500;
+	display: flex;
+	align-items: center;
+}

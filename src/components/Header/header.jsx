@@ -4,32 +4,30 @@ import { ReactComponent as FavIcon } from './img/fav.svg';
 import { ReactComponent as ProfileIcon } from './img/profile.svg';
 import { ReactComponent as LogIcon } from './img/log.svg'
 import { Link, useLocation } from 'react-router-dom';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { CardContext } from '../../context/cardContext';
 import { UserContext } from '../../context/userContext';
+import { useTranslation } from 'react-i18next'
 
-function Header({ children, user, onUpdateUser}) {
-  // const handleClickButtonEdit = (e) => {
-  //   e.preventDefault();
-  //   onUpdateUser({ about: 'Ментор', name: "Александр" });
-  // };
-
+function Header({ children}) {
   const {favorites} = useContext(CardContext);
   const location = useLocation();
   const {isAuthentificated,setActiveModal} = useContext(UserContext);
-  
+
+  const { i18n } = useTranslation();
+  const [lang, setLang] = useState('Ru');
+
+  const changeLanguage = () => {
+    const lang = localStorage.getItem('lang') ?? 'Ru';
+    const newLang = lang === 'Ru' ? 'En' : 'Ru'
+    i18n.changeLanguage(newLang);
+    setLang(newLang)
+    localStorage.setItem('lang', newLang);
+  }
 
   return (
     <header className={cn(s.header, 'cover')}>
       <div className='container'>
-      
-        {/* <span>{user?.about} </span>
-        <span>{user?.email} </span>
-
-        <button className='btn' onClick={handleClickButtonEdit}>
-          Change
-        </button> */}
-
         <div className={s.wrapper}>
           {children}
           <div className={s.iconsMenu}>
@@ -55,6 +53,7 @@ function Header({ children, user, onUpdateUser}) {
           <span className={s.iconBubble} >{favorites.length}</span> 
           )}
           </Link>
+          <span className={s.lang} onClick={()=>changeLanguage()}>{lang}</span>
         </div>
         </div>
       </div>

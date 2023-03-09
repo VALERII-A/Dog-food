@@ -51,15 +51,7 @@ const sendData = async ({ about, name }) => {
     openNotification("error", "Error", "Не удалось изменить аватар");
   }
 };
-// const changeAvatar = async (src) => {
-//   try {
-//     const newUser = await api.editUserAvatar({ avatar: src.avatar });
-//     setCurrentUser({ ...newUser });
-//     openNotification("Success","Аватар успешно изменен");
-//   } catch (error) {
-//     openNotification("error", "Error", "Не удалось изменить аватар");
-//   }
-// };
+
 
     return (<>
     <div className='profile'>
