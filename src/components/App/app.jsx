@@ -24,6 +24,8 @@ import Register from '../Register/Register';
 import ResetPassword from '../ResetPassword/ResetPassword';
 import { PrivateRoute } from '../PrivateRoute/PrivateRoute';
 import { Profile } from '../Profile/Profile';
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUser } from "../../storageTK/user/userSlice";
 
 
 
@@ -35,6 +37,8 @@ function App() {
   // const [view, setView] = useState(false);
   const [activeModal, setActiveModal] = useState(true);
   const [isAuthentificated, setAuthentificated] = useState(false);
+  const dispatch = useDispatch();
+
 
 
   const handleProductLike = useCallback((product) => {
@@ -119,7 +123,9 @@ function App() {
     });
   }  // изменен дан пользователя
 
-
+  useEffect(()=>{
+    dispatch(fetchUser())
+  },[]);
 
   useEffect(() => {
     if (!isAuthentificated) {
