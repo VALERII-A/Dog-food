@@ -1,9 +1,11 @@
 import * as echarts from 'echarts'
 import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 export const Chart = () => {
 
   const text = 'Заказы и посещаемость';
+  const navigate = useNavigate();
 
 
   useEffect(() => {
@@ -82,6 +84,9 @@ export const Chart = () => {
 
   return (
     <>
+     <span className='profile__back' onClick={()=>{navigate(-1)}}>
+                {'< Назад'}
+            </span>
       <div style={{ width: '100%', height: 500 }} id="chartsId"></div>
     </>
   )
