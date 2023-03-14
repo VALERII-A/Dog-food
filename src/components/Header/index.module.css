@@ -38,6 +38,12 @@
 	height: 34px;
 	cursor: pointer;
 }
+.chart{
+	position: relative;
+	width: 34px;
+	height: 34px;
+	cursor: pointer;
+}
 .iconsMenu svg{
 	width: 100%;
 	height: 100%;

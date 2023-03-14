@@ -26,6 +26,7 @@ import { PrivateRoute } from '../PrivateRoute/PrivateRoute';
 import { Profile } from '../Profile/Profile';
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUser } from "../../storageTK/user/userSlice";
+import { Chart } from '../Chart/Chart';
 
 
 
@@ -188,7 +189,14 @@ function App() {
               </PrivateRoute>
             }>
             </Route>
-          
+            <Route path="/chart"
+            element={
+                      <PrivateRoute loggedIn={isAuthentificated}>
+                        <Chart />
+                      </PrivateRoute>}>
+            </Route>
+                  <Route path="*" element={<NoMatchFound />}></Route>
+                  {authRoutes}
           <Route path='*' element={<NoMatchFound />}></Route>
           <Route path='/registrationForm' element={<RegistrationForm/>}></Route>
           {authRoutes}

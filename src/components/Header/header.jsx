@@ -3,6 +3,7 @@ import cn from 'classnames';
 import { ReactComponent as FavIcon } from './img/fav.svg';
 import { ReactComponent as ProfileIcon } from './img/profile.svg';
 import { ReactComponent as LogIcon } from './img/log.svg'
+import { ReactComponent as ChartsIcon } from './img/charts.svg';
 import { Link, useLocation } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import { CardContext } from '../../context/cardContext';
@@ -53,6 +54,9 @@ function Header({ children}) {
           <span className={s.iconBubble} >{favorites.length}</span> 
           )}
           </Link>
+          <Link to={'/chart'} className={s.chart} >
+              <ChartsIcon />
+            </Link>
           <span className={s.lang} onClick={()=>changeLanguage()}>{lang}</span>
         </div>
         </div>
