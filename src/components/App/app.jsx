@@ -125,8 +125,11 @@ function App() {
   }  // изменен дан пользователя
 
   useEffect(()=>{
+    if (!isAuthentificated) {
+      return;
+    }
     dispatch(fetchUser())
-  },[]);
+  },[isAuthentificated]);
 
   useEffect(() => {
     if (!isAuthentificated) {
@@ -134,6 +137,13 @@ function App() {
     }
     handleRequest();
   }, [debounceSearchQuery]); // выз обраб-ки запр-са посл изм-я дебаунс
+
+  // useEffect(() => {
+  //   if (!isAuthentificated) {
+  //     return;
+  //   }
+  //   handleRequest();
+  // }, [isAuthentificated]);
 
   useEffect(() => {
     if (!isAuthentificated) {

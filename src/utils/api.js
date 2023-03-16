@@ -9,7 +9,7 @@ class Api {
     this._configuration = configuration;
   }
   getProductsList() {
-    return fetch(`${this._baseUrl}/products`, { headers: this._headers }).then(
+    return fetch(`${this._baseUrl}/products`, this._configuration()).then(
       onResponse
     );
   }
