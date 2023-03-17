@@ -138,13 +138,6 @@ function App() {
     handleRequest();
   }, [debounceSearchQuery]); // выз обраб-ки запр-са посл изм-я дебаунс
 
-  // useEffect(() => {
-  //   if (!isAuthentificated) {
-  //     return;
-  //   }
-  //   handleRequest();
-  // }, [isAuthentificated]);
-
   useEffect(() => {
     if (!isAuthentificated) {
       return;

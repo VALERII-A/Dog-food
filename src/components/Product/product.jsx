@@ -212,12 +212,14 @@ export const Product = ({
       <div className={s.reviews}>
         <div className={s.reviews__control}>
           <span className={s.reviews__title}>Отзывы</span>
+          { reviews.length > 5 && <div className={s.review__hideMore}>
           <span className={s.reviews__more} onClick={showMore}>
             Еще отзывы
           </span>
           <span className={s.reviews__more} onClick={hideReview}>
             Свернуть
-          </span>
+          </span> </div>}
+
           {!showForm ? 
           <button className={s.reviews__btn}
             onClick={()=>setShowForm(true)}
