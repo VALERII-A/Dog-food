@@ -4,6 +4,9 @@ import { ReactComponent as FavIcon } from './img/fav.svg';
 import { ReactComponent as ProfileIcon } from './img/profile.svg';
 import { ReactComponent as LogIcon } from './img/log.svg'
 import { ReactComponent as ChartsIcon } from './img/charts.svg';
+import { ReactComponent as AddProd } from './img/addProduct.svg';
+
+
 import { Link, useLocation } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import { CardContext } from '../../context/cardContext';
@@ -33,9 +36,12 @@ function Header({ children}) {
           {children}
           <div className={s.iconsMenu}>
           {isAuthentificated ? (
-              <Link to={'/profile'} className={s.favoritesLink}>
+              <><Link to={'/profile'} className={s.favoritesLink}>
                 <ProfileIcon />
               </Link>
+              <Link to={'/addProduct'} className={s.favoritesLink}>
+                <AddProd />
+              </Link></>
             ) : (
               <Link
                 to={'/login'}

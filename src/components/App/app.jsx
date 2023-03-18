@@ -27,6 +27,7 @@ import { Profile } from '../Profile/Profile';
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUser } from "../../storageTK/user/userSlice";
 import { Chart } from '../Chart/Chart';
+import { AddProduct } from '../AddProduct/AddProduct';
 
 
 
@@ -40,7 +41,7 @@ function App() {
   const [isAuthentificated, setAuthentificated] = useState(false);
   const dispatch = useDispatch();
 
-
+console.log(cards);
 
   const handleProductLike = useCallback((product) => {
     const liked = isLiked(product.likes, currentUser?._id);
@@ -198,6 +199,7 @@ function App() {
                         <Chart />
                       </PrivateRoute>}>
             </Route>
+            <Route path='/addProduct' element={<AddProduct/>}></Route>
                   <Route path="*" element={<NoMatchFound />}></Route>
                   {authRoutes}
           <Route path='*' element={<NoMatchFound />}></Route>

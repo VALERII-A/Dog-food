@@ -79,7 +79,15 @@ class Api {
       method: "PATCH",
       body: JSON.stringify(body),
     }).then((res) => onResponse(res))
-}}
+}
+addProduct(data) {
+  return fetch(`${this._baseUrl}/products`, {
+    ...this._configuration(),
+    method: 'POST',
+    body: JSON.stringify(data)
+  }).then(onResponse);
+}
+}
 
 const configuration = () => {
   return {
