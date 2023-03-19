@@ -1,6 +1,7 @@
 
 import { useForm } from 'react-hook-form';
 import api from '../../utils/api';
+import { openNotification } from '../Notification/Notification';
 import s from './index.module.css';
 
 
@@ -13,12 +14,11 @@ export const AddProduct = () => {
         const sendData = async (data) => {
           console.log(data);
           try {
-          const result = await api.addProduct(data);
-          // localStorage.setItem(`token`,result.token);
-          // setAuthentificated(true);
-          // navigate('/')
+           const result = await api.addProduct(data);
+           openNotification('success', 'Success', 'Товар успешно добавлен');
           } catch (error) {
-            console.log(error);
+             openNotification('error', 'Error', 'Не получилось добавить товар');
+             console.log(error);
           }};
     
         return (
@@ -30,7 +30,7 @@ export const AddProduct = () => {
                 placeholder='Введите url картинки'
                 {...register('pictures',{ required: 'Обязательное поле', minLength: {value:3, message:'Минимум 3 буквы'}})}
               />
-              <div>{errors?.name && <p className={s.errorText}>{errors?.name?.message}</p>}</div>
+              <div>{errors?.pictures && <p className={s.errorText}>{errors?.pictures?.message}</p>}</div>
              <input
                 className={s.input}
                 type='text'
@@ -42,16 +42,16 @@ export const AddProduct = () => {
                 className={s.input}
                 type='number'
                 placeholder='Цена'
-                {...register('price',{ required: 'Обязательное поле', minLength: {value:1, message:'Минимум 1 цифр'}})}
+                {...register('price',{ required: 'Обязательное поле', minLength: {value:1, message:'Минимум 1 цифра'}})}
               />
-              <div>{errors?.phoneNumber && <p className={s.errorText}>{errors?.phoneNumber?.message}</p>}</div>
+              <div>{errors?.price && <p className={s.errorText}>{errors?.price?.message}</p>}</div>
               <input
                 className={s.input}
                 type='text'
                 placeholder='Описание'
                 {...register('description',{ required: 'Обязательное поле', minLength: {value:3, message:'Минимум 3 буквы'}})}
               />
-              <div>{errors?.password && <p className={s.errorText}>{errors?.password?.message}</p>}</div>
+              <div>{errors?.description && <p className={s.errorText}>{errors?.description?.message}</p>}</div>
               <button className={s.button}> Отправить </button>
            </form>
             )
