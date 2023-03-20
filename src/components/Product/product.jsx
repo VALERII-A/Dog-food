@@ -1,17 +1,18 @@
 import cn from 'classnames';
-import React, { useEffect,useMemo,useState } from 'react';
+import React, { useContext, useEffect,useMemo,useState } from 'react';
 import s from './index.module.scss';
 import { ReactComponent as Save } from './img/save.svg';
 import { ReactComponent as Basket } from './img/basket.svg';
 import truck from './img/truck.svg';
 import quality from './img/quality.svg';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Rating } from '../Rating/Rating';
 import api from '../../utils/api';
 import BaseButton from '../BaseButton/BaseButton';
 import { Form } from '../Form/Form';
 import { useForm } from 'react-hook-form';
 import { VALIDATE_CONFIG } from '../../constants/constants';
+import { UserContext } from '../../context/userContext';
 
 
 export const Product = ({
@@ -35,6 +36,8 @@ export const Product = ({
   const [rating,setRating] = useState(5);
   const [counterCart, setCounterCart] = useState(0);
   const [reviewsProduct, setReviewsProduct] = useState([]);
+
+  const { setActiveModal} = useContext(UserContext);
 
   useEffect(()=>{
     if (reviews) {
@@ -179,6 +182,11 @@ export const Product = ({
               </p>
             </div>
           </div>
+          <Link
+              to={`/edit-products/${_id}`} 
+              onClick={() => setActiveModal(true)}>
+                <button className={cn('btn', 'btn_type_primary', s.cart)}>Редактировать ваш товар ✂</button>
+            </Link>
         </div>
       </div>
       <div className={s.box}>

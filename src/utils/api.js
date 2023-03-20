@@ -54,12 +54,12 @@ class Api {
     this._configuration()
     ).then(onResponse);
   }
-  deleteProductById(idProduct) {
-    return fetch(`${this._baseUrl}/products/${idProduct}`, {
-      ...this._configuration(),
-      method: 'DELETE',
-    }).then(onResponse);
-  }
+  // deleteProductById(idProduct) {
+  //   return fetch(`${this._baseUrl}/products/${idProduct}`, {
+  //     ...this._configuration(),
+  //     method: 'DELETE',
+  //   }).then(onResponse);
+  // }
   addReview(productId,body){
     return fetch(`${this._baseUrl}/products/review/${productId}`, {
       ...this._configuration(),
@@ -85,6 +85,19 @@ addProduct(data) {
     ...this._configuration(),
     method: 'POST',
     body: JSON.stringify(data)
+  }).then(onResponse);
+}
+editProductById(productId, body) {
+  return fetch(`${this._baseUrl}/products/${productId}`, {
+    ...this._configuration(),
+    method: "PATCH",
+    body: JSON.stringify(body),
+  }).then(onResponse);
+}
+deleteProductById(productId) {
+  return fetch(`${this._baseUrl}/products/${productId}`, {
+    ...this._configuration(),
+    method: "DELETE",
   }).then(onResponse);
 }
 }

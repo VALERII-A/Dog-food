@@ -1,7 +1,8 @@
 
 import { useForm } from 'react-hook-form';
+import { openNotification } from '../../components/Notification/Notification';
 import api from '../../utils/api';
-import { openNotification } from '../Notification/Notification';
+
 import s from './index.module.css';
 
 
@@ -45,8 +46,8 @@ export const AddProduct = () => {
                 {...register('price',{ required: 'Обязательное поле', minLength: {value:1, message:'Минимум 1 цифра'}})}
               />
               <div>{errors?.price && <p className={s.errorText}>{errors?.price?.message}</p>}</div>
-              <input
-                className={s.input}
+              <textarea
+                className={s.textarea}
                 type='text'
                 placeholder='Описание'
                 {...register('description',{ required: 'Обязательное поле', minLength: {value:3, message:'Минимум 3 буквы'}})}
