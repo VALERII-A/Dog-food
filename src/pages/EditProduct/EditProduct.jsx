@@ -9,9 +9,11 @@ import { openNotification } from "../../components/Notification/Notification";
 export const EditProduct = () => {
 
     const [product, setProduct] = useState();
+
     const {
         register,
         handleSubmit,
+        reset,
         formState: { errors },
     } = useForm();
 
@@ -40,6 +42,17 @@ export const EditProduct = () => {
             }};
 
 
+            useEffect(() => {
+              if (product) {
+                  reset({
+                      pictures: product.pictures,
+                      name: product.name,
+                      price: product.price,
+                      description: product.description,
+                  });
+              }
+          }, [product]);
+
     useEffect(() => {
         api
             .getProductById(productId)
@@ -55,7 +68,7 @@ export const EditProduct = () => {
             className={s.input}
             type='text'
             placeholder='Введите url картинки'
-            defaultValue={product?.pictures}
+            // defaultValue={product?.pictures}
             {...register('pictures',{ required: 'Обязательное поле', minLength: {value:3, message:'Минимум 3 буквы'}})}
           />
           <div>{errors?.pictures && <p className={s.errorText}>{errors?.pictures?.message}</p>}</div>
@@ -63,7 +76,7 @@ export const EditProduct = () => {
             className={s.input}
             type='text'
             placeholder='Название'
-            defaultValue={product?.name}
+            // defaultValue={product?.name}
             {...register('name',{ required: 'Обязательное поле', minLength: {value:3, message:'Минимум 3 буквы'}})}
           />
           <div>{errors?.name && <p className={s.errorText}>{errors?.name?.message}</p>}</div>
@@ -71,7 +84,7 @@ export const EditProduct = () => {
             className={s.input}
             type='number'
             placeholder='Цена'
-            defaultValue={product?.price}
+            // defaultValue={product?.price}
             {...register('price',{ required: 'Обязательное поле', minLength: {value:1, message:'Минимум 1 цифра'}})}
           />
           <div>{errors?.price && <p className={s.errorText}>{errors?.price?.message}</p>}</div>
@@ -79,7 +92,7 @@ export const EditProduct = () => {
             className='textarea'
             type='text'
             placeholder='Описание'
-            defaultValue={product?.description}
+            // defaultValue={product?.description}
             {...register('description',{ required: 'Обязательное поле', minLength: {value:3, message:'Минимум 3 буквы'}})}
           />
           <div>{errors?.description && <p className={s.errorText}>{errors?.description?.message}</p>}</div>

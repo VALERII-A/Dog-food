@@ -29,8 +29,10 @@ export const Product = ({
   onSendReview,
   deleteReview, 
   stock,
-  wight
+  wight,
+  author
 }) => {
+
   const [users, setUsers] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [rating,setRating] = useState(5);
@@ -58,7 +60,6 @@ export const Product = ({
   const getUser = (id) => {
     if (!users.length) return "User";
     const user = users.find((el) => el._id === id);
-    console.log({ user });
     if (user.avatar.includes('default-image')) {
       return {...user, avatar : 'https://media.istockphoto.com/id/1300845620/ru/%D0%B2%D0%B5%D0%BA%D1%82%D0%BE%D1%80%D0%BD%D0%B0%D1%8F/%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8C-icon-flat-%D0%B8%D0%B7%D0%BE%D0%BB%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD-%D0%BD%D0%B0-%D0%B1%D0%B5%D0%BB%D0%BE%D0%BC-%D1%84%D0%BE%D0%BD%D0%B5-%D1%81%D0%B8%D0%BC%D0%B2%D0%BE%D0%BB-%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8F-%D0%B8%D0%BB%D0%BB%D1%8E%D1%81%D1%82%D1%80%D0%B0%D1%86%D0%B8%D1%8F-%D0%B2%D0%B5%D0%BA%D1%82%D0%BE%D1%80%D0%B0.jpg?s=612x612&w=0&k=20&c=Po5TTi0yw6lM7qz6yay5vUbUBy3kAEWrpQmDaUMWnek='}
     }
@@ -182,11 +183,12 @@ export const Product = ({
               </p>
             </div>
           </div>
-          <Link
-              to={`/edit-products/${_id}`} 
-              onClick={() => setActiveModal(true)}>
+          {/* <Link to={`/edit-products/${_id}`} >
                 <button className={cn('btn', 'btn_type_primary', s.cart)}>Редактировать ваш товар ✂</button>
-            </Link>
+          </Link> */}
+            {author?._id == currentUser?._id && <Link to={`/edit-products/${_id}`} >
+                <button className={cn('btn', 'btn_type_primary', s.cart)}>Редактировать ваш товар ✂</button>
+          </Link>}
         </div>
       </div>
       <div className={s.box}>

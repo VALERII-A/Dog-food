@@ -1,4 +1,6 @@
 
+import { useContext } from 'react';
+import { CardContext } from '../../context/cardContext';
 import { useForm } from 'react-hook-form';
 import { openNotification } from '../../components/Notification/Notification';
 import api from '../../utils/api';
@@ -7,15 +9,13 @@ import s from './index.module.css';
 
 
 export const AddProduct = () => {
-
     
-    
-    
-        const { register, handleSubmit, formState:{errors} } = useForm();
+        const { register, handleSubmit,reset, formState:{errors} } = useForm(); 
+        
         const sendData = async (data) => {
-          console.log(data);
           try {
            const result = await api.addProduct(data);
+           reset()
            openNotification('success', 'Success', 'Товар успешно добавлен');
           } catch (error) {
              openNotification('error', 'Error', 'Не получилось добавить товар');
