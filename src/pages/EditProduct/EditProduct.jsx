@@ -1,12 +1,15 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import api from "../../utils/api";
 import './style.scss'
 import s from './index.module.css';
 import { openNotification } from "../../components/Notification/Notification";
+import { CardContext } from "../../context/cardContext";
 
 export const EditProduct = () => {
+
+    const {setCards} = useContext(CardContext)
 
     const [product, setProduct] = useState();
 
@@ -21,11 +24,12 @@ export const EditProduct = () => {
 
     const sendData = async (data) => {
         try {
-            await api.editProductById(productId, {...product,
+           const newProducts = await api.editProductById(productId, {...product,
                 pictures: data.pictures ,
                 name :data.name,
                 price :data.price,
                 description :data.description})
+           setCards((state) => state.map(e => e._id === newProducts._id ? newProducts : e))
          openNotification('success', 'Success', 'Товар успешно отредактирован');
         } catch (error) {
            openNotification('error', 'Error', 'Не получилось отредактировать товар');
@@ -34,7 +38,8 @@ export const EditProduct = () => {
 
         const deleteProductById = async (productId) => {
             try {
-                await api.deleteProductById(productId)
+              const newProducts = await api.deleteProductById(productId)
+              setCards((state) => state.filter((product) => product._id !== productId))
              openNotification('success', 'Success', 'Товар успешно удален');
             } catch (error) {
                openNotification('error', 'Error', 'Не получилось удалить товар');
@@ -57,8 +62,7 @@ export const EditProduct = () => {
         api
             .getProductById(productId)
             .then((productData) => setProduct(productData))
-            .catch((err) => {
-            })
+            .catch((err) => {console.log(err)})
     }, [productId]);
 
     return (<>
@@ -68,7 +72,6 @@ export const EditProduct = () => {
             className={s.input}
             type='text'
             placeholder='Введите url картинки'
-            // defaultValue={product?.pictures}
             {...register('pictures',{ required: 'Обязательное поле', minLength: {value:3, message:'Минимум 3 буквы'}})}
           />
           <div>{errors?.pictures && <p className={s.errorText}>{errors?.pictures?.message}</p>}</div>
@@ -76,7 +79,6 @@ export const EditProduct = () => {
             className={s.input}
             type='text'
             placeholder='Название'
-            // defaultValue={product?.name}
             {...register('name',{ required: 'Обязательное поле', minLength: {value:3, message:'Минимум 3 буквы'}})}
           />
           <div>{errors?.name && <p className={s.errorText}>{errors?.name?.message}</p>}</div>
@@ -84,7 +86,6 @@ export const EditProduct = () => {
             className={s.input}
             type='number'
             placeholder='Цена'
-            // defaultValue={product?.price}
             {...register('price',{ required: 'Обязательное поле', minLength: {value:1, message:'Минимум 1 цифра'}})}
           />
           <div>{errors?.price && <p className={s.errorText}>{errors?.price?.message}</p>}</div>
@@ -92,7 +93,6 @@ export const EditProduct = () => {
             className='textarea'
             type='text'
             placeholder='Описание'
-            // defaultValue={product?.description}
             {...register('description',{ required: 'Обязательное поле', minLength: {value:3, message:'Минимум 3 буквы'}})}
           />
           <div>{errors?.description && <p className={s.errorText}>{errors?.description?.message}</p>}</div>

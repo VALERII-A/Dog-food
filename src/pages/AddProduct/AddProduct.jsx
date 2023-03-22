@@ -9,12 +9,15 @@ import s from './index.module.css';
 
 
 export const AddProduct = () => {
+         
+        const {setCards} = useContext(CardContext)
     
         const { register, handleSubmit,reset, formState:{errors} } = useForm(); 
         
         const sendData = async (data) => {
           try {
            const result = await api.addProduct(data);
+           setCards((state) => [...state, result])
            reset()
            openNotification('success', 'Success', 'Товар успешно добавлен');
           } catch (error) {

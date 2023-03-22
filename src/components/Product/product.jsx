@@ -183,9 +183,6 @@ export const Product = ({
               </p>
             </div>
           </div>
-          {/* <Link to={`/edit-products/${_id}`} >
-                <button className={cn('btn', 'btn_type_primary', s.cart)}>Редактировать ваш товар ✂</button>
-          </Link> */}
             {author?._id == currentUser?._id && <Link to={`/edit-products/${_id}`} >
                 <button className={cn('btn', 'btn_type_primary', s.cart)}>Редактировать ваш товар ✂</button>
           </Link>}
