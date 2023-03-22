@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import api from "../../utils/api";
 import './style.scss'
 import s from './index.module.css';
@@ -8,19 +8,18 @@ import { openNotification } from "../../components/Notification/Notification";
 import { CardContext } from "../../context/cardContext";
 
 export const EditProduct = () => {
-
+    const { productId } = useParams();
     const {setCards} = useContext(CardContext)
-
     const [product, setProduct] = useState();
-
     const {
         register,
         handleSubmit,
         reset,
         formState: { errors },
     } = useForm();
-
-    const { productId } = useParams();
+    
+    const navigate = useNavigate()
+  
 
     const sendData = async (data) => {
         try {
@@ -41,6 +40,7 @@ export const EditProduct = () => {
               const newProducts = await api.deleteProductById(productId)
               setCards((state) => state.filter((product) => product._id !== productId))
              openNotification('success', 'Success', 'Товар успешно удален');
+             navigate('/')
             } catch (error) {
                openNotification('error', 'Error', 'Не получилось удалить товар');
                console.log(error);
