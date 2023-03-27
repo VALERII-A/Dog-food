@@ -29,6 +29,8 @@ import { fetchUser } from "../../storageTK/user/userSlice";
 import { Chart } from '../Chart/Chart';
 import { AddProduct } from '../../pages/AddProduct/AddProduct';
 import { EditProduct } from '../../pages/EditProduct/EditProduct';
+import Dog from './img/dog.jpg'
+
 
 
 
@@ -214,7 +216,8 @@ function App() {
       </main>
      ) : (
         <div className="not-auth">
-                Авторизуйтесь пожалуйста
+          <img src={Dog} alt='photo' />
+          Авторизуйтесь пожалуйста
            <Routes>{authRoutes}</Routes>
         </div> )} 
 
