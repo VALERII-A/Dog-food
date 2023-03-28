@@ -1,3 +1,34 @@
+### Проект DogFood
+Реализовано:
+ - Каталог продуктов
+ - Страницы:главная,карточка товара,избраное,профиля,добавления/удаления товара ...
+ - Внедрен контекст через хук Context
+ - Использованы формы такие 
+ - Реакт 
+ - Внедрен Редакс
+ - Есть поддержка мультиязычности
+ - Сделана визуализация аналитики посредством графиков(библиотека такая)
+
+### Использованы технологии
+Список использованных источников/
+программных средств:
+reactjs.com
+redux-toolkit.js.com
+eactrouter.com
+ant.design.com
+react-hook-form.com
+echarts.apache.com
+sass-scss.com
+github.com
+
+
+Для запуска проекта нужно:
+ - Перейти в директорию проекта
+ - npm install / yarn add // pnpm install
+ - команда для запуска npm start
+ - команда для сборки npm run build
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
