@@ -41,7 +41,16 @@ function Header({ children}) {
               </Link>
               <Link to={'/addProduct'} className={s.favoritesLink}>
                 <AddProd />
-              </Link></>
+              </Link>
+              <Link className={s.favoritesLink} to='/favorites'> 
+          <FavIcon />
+          {favorites.length !==0 && (
+          <span className={s.iconBubble} >{favorites.length}</span> 
+          )}
+          </Link>
+          <Link to={'/chart'} className={s.chart} >
+              <ChartsIcon />
+            </Link></>
             ) : (
               <Link
                 to={'/login'}
@@ -54,15 +63,7 @@ function Header({ children}) {
                 {<LogIcon />}
               </Link>
             )}
-          <Link className={s.favoritesLink} to='/favorites'> 
-          <FavIcon />
-          {favorites.length !==0 && (
-          <span className={s.iconBubble} >{favorites.length}</span> 
-          )}
-          </Link>
-          <Link to={'/chart'} className={s.chart} >
-              <ChartsIcon />
-            </Link>
+          
           <span className={s.lang} onClick={()=>changeLanguage()}>{lang}</span>
         </div>
         </div>
