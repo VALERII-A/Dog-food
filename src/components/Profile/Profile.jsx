@@ -112,20 +112,6 @@ const sendData = async ({ about, name }) => {
                 <p className="auth__error">{errors?.about?.message}</p>
               )}
             </div>   
-          <input
-            className='auth__input'
-            type='email'
-            name='email'
-            placeholder='Email'
-            defaultValue={currentUser.email}
-          />
-          <input
-            className='auth__input'
-            type='text'
-            name='id'
-            placeholder='id'
-            defaultValue={currentUser._id}
-          />
           </div> 
           <BaseButton type='submit' color={'yellow'}>
               Сохранить
