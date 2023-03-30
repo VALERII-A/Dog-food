@@ -19,15 +19,48 @@ export const EditProduct = () => {
     } = useForm();
     
     const navigate = useNavigate()
-  
 
+    const validationRules = {
+      pictures: {
+        required: 'Обязательное поле',
+        minLength: { value: 3, message: 'Минимум 3 буквы' }
+      },
+      name: {
+        required: 'Обязательное поле',
+        minLength: { value: 3, message: 'Минимум 3 буквы' }
+      },
+      price: {
+        required: 'Обязательное поле',
+        minLength: { value: 1, message: 'Минимум 1 цифра' }
+      },
+      discount: {
+        required: 'Обязательное поле',
+        minLength: { value: 1, message: 'Минимум 1 цифра' }
+      },
+      stock: {
+        required: 'Обязательное поле',
+        minLength: { value: 1, message: 'Минимум 1 цифра' }
+      },
+      wight: {
+        required: 'Обязательное поле',
+        minLength: { value: 3, message: 'Минимум 3 символа' }
+      },
+      description: {
+        required: 'Обязательное поле',
+        minLength: { value: 3, message: 'Минимум 3 буквы' }
+      }
+    };
+  
     const sendData = async (data) => {
         try {
            const newProducts = await api.editProductById(productId, {...product,
                 pictures: data.pictures ,
-                name :data.name,
-                price :data.price,
-                description :data.description})
+                name: data.name,
+                price: data.price,
+                discount: data.discount,
+                stock: data.stock,
+                wight: data.wight,
+                description: data.description})
            setCards((state) => state.map(e => e._id === newProducts._id ? newProducts : e))
          openNotification('success', 'Success', 'Товар успешно отредактирован');
         } catch (error) {
@@ -50,10 +83,13 @@ export const EditProduct = () => {
             useEffect(() => {
               if (product) {
                   reset({
-                      pictures: product.pictures,
-                      name: product.name,
-                      price: product.price,
-                      description: product.description,
+                    pictures: product.pictures ,
+                    name: product.name,
+                    price: product.price,
+                    discount: product.discount,
+                    stock: product.stock,
+                    wight: product.wight,
+                    description: product.description
                   });
               }
           }, [product]);
@@ -69,33 +105,51 @@ export const EditProduct = () => {
         <form onSubmit={handleSubmit(sendData)}>
          <h3>Редактировать продукт</h3>
          <input
-            className={s.input}
-            type='text'
-            placeholder='Введите url картинки'
-            {...register('pictures',{ required: 'Обязательное поле', minLength: {value:3, message:'Минимум 3 буквы'}})}
-          />
-          <div>{errors?.pictures && <p className={s.errorText}>{errors?.pictures?.message}</p>}</div>
-         <input
-            className={s.input}
-            type='text'
-            placeholder='Название'
-            {...register('name',{ required: 'Обязательное поле', minLength: {value:3, message:'Минимум 3 буквы'}})}
-          />
-          <div>{errors?.name && <p className={s.errorText}>{errors?.name?.message}</p>}</div>
-          <input
-            className={s.input}
-            type='number'
-            placeholder='Цена'
-            {...register('price',{ required: 'Обязательное поле', minLength: {value:1, message:'Минимум 1 цифра'}})}
-          />
-          <div>{errors?.price && <p className={s.errorText}>{errors?.price?.message}</p>}</div>
-          <textarea
-            className='textarea'
-            type='text'
-            placeholder='Описание'
-            {...register('description',{ required: 'Обязательное поле', minLength: {value:3, message:'Минимум 3 буквы'}})}
-          />
-          <div>{errors?.description && <p className={s.errorText}>{errors?.description?.message}</p>}</div>
+                className={s.input}
+                type='string'
+                placeholder='Введите url картинки'
+                {...register('pictures', {...validationRules.pictures})}
+              />
+              <div>{errors?.pictures && <p className={s.errorText}>{errors?.pictures?.message}</p>}</div>
+             <input
+                className={s.input}
+                type='string'
+                placeholder='Название'
+                {...register('name', {...validationRules.name})}
+              />
+              <div>{errors?.name && <p className={s.errorText}>{errors?.name?.message}</p>}</div>
+              <input
+                className={s.input}
+                type='number'
+                placeholder='Цена'
+                {...register('price', {...validationRules.price})}
+              />
+              <input
+                className={s.input}
+                type='number'
+                placeholder='Скидка'
+                {...register('discount', {...validationRules.discount})}
+              />
+              <input
+                className={s.input}
+                type='number'
+                placeholder='Количесво'
+                {...register('stock', {...validationRules.stock})}
+              />
+              <input
+                className={s.input}
+                type='string'
+                placeholder='Вес'
+                {...register('wight', {...validationRules.wight})}
+              />
+              <div>{errors?.price && <p className={s.errorText}>{errors?.price?.message}</p>}</div>
+              <textarea
+                className='textarea'
+                type='text'
+                placeholder='Описание'
+                {...register('description', {...validationRules.description})}
+              />
+              <div>{errors?.description && <p className={s.errorText}>{errors?.description?.message}</p>}</div>
           <button className={s.button}> Сохранить </button>
        </form>
        <button className={s.button}onClick={() => deleteProductById(productId)}> 

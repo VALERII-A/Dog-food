@@ -39,7 +39,6 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');  // реагирует на запросы.поисковой запрос
   const [currentUser, setCurrentUser] = useState(null);  // текущ пользователь
   const [favorites, setFavorites] = useState([]);
-  // const [view, setView] = useState(false);
   const [activeModal, setActiveModal] = useState(true);
   const [isAuthentificated, setAuthentificated] = useState(false);
   const dispatch = useDispatch();

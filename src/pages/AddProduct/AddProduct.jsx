@@ -9,6 +9,37 @@ import s from './index.module.css';
 
 
 export const AddProduct = () => {
+
+  const validationRules = {
+    pictures: {
+      required: 'Обязательное поле',
+      minLength: { value: 3, message: 'Минимум 3 буквы' }
+    },
+    name: {
+      required: 'Обязательное поле',
+      minLength: { value: 3, message: 'Минимум 3 буквы' }
+    },
+    price: {
+      required: 'Обязательное поле',
+      minLength: { value: 1, message: 'Минимум 1 цифра' }
+    },
+    discount: {
+      required: 'Обязательное поле',
+      minLength: { value: 1, message: 'Минимум 1 цифра' }
+    },
+    stock: {
+      required: 'Обязательное поле',
+      minLength: { value: 1, message: 'Минимум 1 цифра' }
+    },
+    wight: {
+      required: 'Обязательное поле',
+      minLength: { value: 3, message: 'Минимум 3 символа' }
+    },
+    description: {
+      required: 'Обязательное поле',
+      minLength: { value: 3, message: 'Минимум 3 буквы' }
+    }
+  };
          
         const {setCards} = useContext(CardContext)
     
@@ -24,45 +55,59 @@ export const AddProduct = () => {
              openNotification('error', 'Error', 'Не получилось добавить товар');
              console.log(error);
           }};
+
     
         return (
             <form onSubmit={handleSubmit(sendData)}>
              <h3>Добавить продукт</h3>
              <input
                 className={s.input}
-                type='text'
+                type='string'
                 placeholder='Введите url картинки'
-                {...register('pictures',{ required: 'Обязательное поле', minLength: {value:3, message:'Минимум 3 буквы'}})}
+                {...register('pictures', {...validationRules.pictures})}
               />
               <div>{errors?.pictures && <p className={s.errorText}>{errors?.pictures?.message}</p>}</div>
              <input
                 className={s.input}
-                type='text'
+                type='string'
                 placeholder='Название'
-                {...register('name',{ required: 'Обязательное поле', minLength: {value:3, message:'Минимум 3 буквы'}})}
+                {...register('name', {...validationRules.name})}
               />
               <div>{errors?.name && <p className={s.errorText}>{errors?.name?.message}</p>}</div>
               <input
                 className={s.input}
                 type='number'
                 placeholder='Цена'
-                {...register('price',{ required: 'Обязательное поле', minLength: {value:1, message:'Минимум 1 цифра'}})}
+                {...register('price', {...validationRules.price})}
+              />
+              <input
+                className={s.input}
+                type='number'
+                placeholder='Скидка'
+                {...register('discount', {...validationRules.discount})}
+              />
+              <input
+                className={s.input}
+                type='number'
+                placeholder='Количесво'
+                {...register('stock', {...validationRules.stock})}
+              />
+              <input
+                className={s.input}
+                type='string'
+                placeholder='Вес'
+                {...register('wight', {...validationRules.wight})}
               />
               <div>{errors?.price && <p className={s.errorText}>{errors?.price?.message}</p>}</div>
               <textarea
                 className={s.textarea}
                 type='text'
                 placeholder='Описание'
-                {...register('description',{ required: 'Обязательное поле', minLength: {value:3, message:'Минимум 3 буквы'}})}
+                {...register('description', {...validationRules.description})}
               />
               <div>{errors?.description && <p className={s.errorText}>{errors?.description?.message}</p>}</div>
               <button className={s.button}> Отправить </button>
            </form>
-            )
-    
-    
-
-
-    
+            )    
 };
 
