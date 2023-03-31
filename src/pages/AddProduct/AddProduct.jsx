@@ -33,7 +33,7 @@ export const AddProduct = () => {
     },
     wight: {
       required: 'Обязательное поле',
-      minLength: { value: 3, message: 'Минимум 3 символа' }
+      minLength: { value: 2, message: 'Минимум 2 символа' }
     },
     description: {
       required: 'Обязательное поле',
@@ -80,25 +80,28 @@ export const AddProduct = () => {
                 placeholder='Цена'
                 {...register('price', {...validationRules.price})}
               />
+              <div>{errors?.price && <p className={s.errorText}>{errors?.price?.message}</p>}</div>
               <input
                 className={s.input}
                 type='number'
                 placeholder='Скидка'
                 {...register('discount', {...validationRules.discount})}
               />
+              <div>{errors?.discount && <p className={s.errorText}>{errors?.discount?.message}</p>}</div>
               <input
                 className={s.input}
                 type='number'
                 placeholder='Количесво'
                 {...register('stock', {...validationRules.stock})}
               />
+              <div>{errors?.stock && <p className={s.errorText}>{errors?.stock?.message}</p>}</div>
               <input
                 className={s.input}
                 type='string'
                 placeholder='Вес'
                 {...register('wight', {...validationRules.wight})}
               />
-              <div>{errors?.price && <p className={s.errorText}>{errors?.price?.message}</p>}</div>
+              <div>{errors?.wight && <p className={s.errorText}>{errors?.wight?.message}</p>}</div>
               <textarea
                 className={s.textarea}
                 type='text'

@@ -43,7 +43,6 @@ function App() {
   const [isAuthentificated, setAuthentificated] = useState(false);
   const dispatch = useDispatch();
 
-
   const handleProductLike = useCallback((product) => {
     const liked = isLiked(product.likes, currentUser?._id);
     api.changeLikeProduct(product._id, liked).then((newCard) => {
@@ -60,7 +59,7 @@ function App() {
 
   const handleRequest = () => {
     api
-      .search(searchQuery)
+      .search(debounceSearchQuery)
       .then((res) => setCards(res))
       .catch((err) => console.log(err));
   };  // фильр-ый запрос по поиску

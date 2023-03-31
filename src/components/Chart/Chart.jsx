@@ -1,11 +1,14 @@
 import * as echarts from 'echarts'
-import { useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { CardContext } from '../../context/cardContext';
 
 export const Chart = () => {
 
-  const text = 'Заказы и посещаемость';
+  const text = 'Популярность';
   const navigate = useNavigate();
+
+const {cards} = useContext(CardContext)
 
 
   useEffect(() => {
@@ -42,39 +45,39 @@ export const Chart = () => {
       },
       xAxis: {
         type: 'category',
-        data: ['Январь', 'Февраль', 'Март', 'Апрель', ]
+        data: cards.sort((a, b) => b.likes.length - a.likes.length).map(e => e.name),
       },
       series: [
         {
-          name: 'Заказы',
+          name: 'Лайки',
           type: 'bar',
-          data: [17533, 3489, 14646,6244, 0],
+          data: cards.sort((a, b) => b.likes.length - a.likes.length).map(e => e.likes.length),
           color: '#747474'
         },
         {
-          name: 'Посещаемость',
+          name: 'Отзывы',
           type: 'bar',
-          data: [18493, 12686, 23665, 12355, 0, 0],
+          data: cards.sort((a, b) => b.reviews.length - a.reviews.length).map(e => e.reviews.length),
           color: '#fed700'
         }
       ],
       
-      // dataZoom: [
-      //   {
-      //     type: 'inside',
-      //     xAxisIndex: [0, 1],
-      //     start: 0,
-      //     end: 150
-      //   },
-      //   {
-      //     show: true,
-      //     xAxisIndex: [0, 1],
-      //     type: 'slider',
-      //     bottom: 200,
-      //     start: 0,
-      //     end: 150
-      //   }
-      // ], 
+      dataZoom: [
+        {
+          type: 'inside',
+          xAxisIndex: [0, 1],
+          start: 0,
+          end: 150
+        },
+        {
+          show: true,
+          xAxisIndex: [0, 1],
+          type: 'slider',
+          bottom: 0, 
+          start: 0,
+          end: 150
+        }
+      ],
     };
     
     const chartDom = document.getElementById('chartsId')
