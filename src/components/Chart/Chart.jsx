@@ -40,38 +40,39 @@ const {cards} = useContext(CardContext)
         containLabel: true
       },
       yAxis: {
-        type: 'value',
-        boundaryGap: [0, 0.01]
+        type: 'category',
+        boundaryGap: [0, 0.01],
+        data: cards.sort((a, b) => a.likes.length - b.likes.length).map(e => e.name),
       },
       xAxis: {
-        type: 'category',
-        data: cards.sort((a, b) => b.likes.length - a.likes.length).map(e => e.name),
+        type: 'value',
+        
       },
       series: [
         {
           name: 'Лайки',
           type: 'bar',
-          data: cards.sort((a, b) => b.likes.length - a.likes.length).map(e => e.likes.length),
-          color: '#747474'
+          data: cards.sort((a, b) => a.likes.length - b.likes.length).map(e => e.likes.length),
+          color: "red"
         },
         {
           name: 'Отзывы',
           type: 'bar',
-          data: cards.sort((a, b) => b.reviews.length - a.reviews.length).map(e => e.reviews.length),
-          color: '#fed700'
+          data: cards.sort((a, b) => a.reviews.length - b.reviews.length).map(e => e.reviews.length),
+          color: 'blue'
         }
       ],
       
       dataZoom: [
         {
           type: 'inside',
-          xAxisIndex: [0, 1],
-          start: 0,
-          end: 150
+          yAxisIndex: [0, 1],
+          start: 200,
+          end: 180
         },
         {
           show: true,
-          xAxisIndex: [0, 1],
+          yAxisIndex: [0, 1],
           type: 'slider',
           bottom: 0, 
           start: 0,
@@ -83,14 +84,14 @@ const {cards} = useContext(CardContext)
     const chartDom = document.getElementById('chartsId')
     const myChart = echarts.init(chartDom)
     option && myChart.setOption(option)
-  }, [])
+  }, [cards])
 
   return (
     <>
      <span className='profile__back' onClick={()=>{navigate(-1)}}>
                 {'< Назад'}
             </span>
-      <div style={{ width: '100%', height: 500 }} id="chartsId"></div>
+      <div style={{ width: '100vh', height: '85vh' }} id="chartsId"></div>
     </>
   )
 }
