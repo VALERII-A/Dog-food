@@ -55,7 +55,7 @@ function App() {
     });
   },[cards, currentUser?._id])  // лайки
 
-  const debounceSearchQuery = useDebounce(searchQuery, 1000);  // накопл знач запроса серч
+  const debounceSearchQuery = useDebounce(searchQuery, 500);  // накопл знач запроса серч
 
   const handleRequest = () => {
     api
