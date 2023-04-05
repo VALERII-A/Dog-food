@@ -20,26 +20,29 @@ export const EditProduct = () => {
     
     const navigate = useNavigate()
 
+    const minLetter = 'Минимум 3 буквы'
+    const minNumber = 'Минимум 1 цифра'
+
     const validationRules = {
       pictures: {
         required: 'Обязательное поле',
-        minLength: { value: 3, message: 'Минимум 3 буквы' }
+        minLength: { value: 3, message: minLetter }
       },
       name: {
         required: 'Обязательное поле',
-        minLength: { value: 3, message: 'Минимум 3 буквы' }
+        minLength: { value: 3, message: minLetter }
       },
       price: {
         required: 'Обязательное поле',
-        minLength: { value: 1, message: 'Минимум 1 цифра' }
+        minLength: { value: 1, message: minNumber }
       },
       discount: {
-        required: 'Обязательное поле',
-        minLength: { value: 1, message: 'Минимум 1 цифра' }
+        // required: 'Обязательное поле',
+        minLength: { value: 1, message: minNumber }
       },
       stock: {
         required: 'Обязательное поле',
-        minLength: { value: 1, message: 'Минимум 1 цифра' }
+        minLength: { value: 1, message: minNumber }
       },
       wight: {
         required: 'Обязательное поле',
@@ -47,7 +50,7 @@ export const EditProduct = () => {
       },
       description: {
         required: 'Обязательное поле',
-        minLength: { value: 3, message: 'Минимум 3 буквы' }
+        minLength: { value: 3, message: minLetter }
       }
     };
   
